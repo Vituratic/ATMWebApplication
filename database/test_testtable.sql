@@ -33,7 +33,7 @@ CREATE TABLE `testtable` (
 
 LOCK TABLES `testtable` WRITE;
 /*!40000 ALTER TABLE `testtable` DISABLE KEYS */;
-INSERT INTO `testtable` VALUES ('testentry');
+INSERT INTO `testtable` VALUES ('testentry'),('testentry');
 /*!40000 ALTER TABLE `testtable` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -46,4 +46,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-09-28  7:48:03
+-- Dump completed on 2018-09-28  8:34:25
