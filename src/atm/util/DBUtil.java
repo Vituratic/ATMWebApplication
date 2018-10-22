@@ -5,6 +5,7 @@ import com.mysql.jdbc.Driver;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class DBUtil {
 
@@ -23,5 +24,13 @@ public class DBUtil {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public static boolean verifyLogin(final String kontonummer, final String password) {
+        final String sql = "SELECT * FROM user WHERE Kontonummer=" + kontonummer + " AND Passwort='" + password + "'";
+        if (executeSql(sql)) {
+            return true;
+        }
+        return false;
     }
 }
