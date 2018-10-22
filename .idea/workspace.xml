@@ -7,7 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="655cd6c3-3170-44d8-9655-52343fd9c8df" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/atm/core/ATM.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,25 +30,30 @@
     <expand>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="test@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="banka@localhost" type="feb32156:DbDataSourceImpl" />
       </path>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="test@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="banka@localhost" type="feb32156:DbDataSourceImpl" />
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
       </path>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="test@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="banka@localhost" type="feb32156:DbDataSourceImpl" />
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="test: schema" type="c314c289:MysqlImplModel$Schema" />
+        <item name="banka: schema" type="c314c289:MysqlImplModel$Schema" />
       </path>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="test@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="banka@localhost" type="feb32156:DbDataSourceImpl" />
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+<<<<<<< HEAD
         <item name="test: schema" type="c314c289:MysqlImplModel$Schema" />
         <item name="testtable: table" type="98d5ac3d:MysqlImplModel$Table" />
+=======
+        <item name="banka: schema" type="c314c289:MysqlImplModel$Schema" />
+        <item name="user: table" type="98d5ac3d:MysqlImplModel$Table" />
+>>>>>>> dev
       </path>
     </expand>
     <select />
@@ -57,37 +62,43 @@
     <session id="-1489659295">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
+          <entry key="project.closed" value="2" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.20" value="1" />
-          <entry key="project.opened" value="2" />
+          <entry key="project.open.time.22" value="1" />
+          <entry key="project.open.time.3" value="1" />
+          <entry key="project.opened" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
+          <entry key="iml" value="1" />
           <entry key="java" value="2" />
-          <entry key="sql" value="2" />
+          <entry key="sql" value="5" />
+          <entry key="testtable" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
+          <entry key="Database Element" value="1" />
+          <entry key="IDEA_MODULE" value="1" />
           <entry key="JAVA" value="2" />
-          <entry key="SQL" value="1" />
-          <entry key="Scratch" value="1" />
+          <entry key="SQL" value="2" />
+          <entry key="Scratch" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="21" />
-          <entry key="sql" value="49" />
-          <entry key="txt" value="24" />
+          <entry key="java" value="92" />
+          <entry key="sql" value="106" />
+          <entry key="txt" value="36" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="21" />
-          <entry key="PLAIN_TEXT" value="24" />
-          <entry key="Scratch" value="49" />
+          <entry key="JAVA" value="92" />
+          <entry key="PLAIN_TEXT" value="36" />
+          <entry key="Scratch" value="106" />
         </counts>
       </usages-collector>
     </session>
@@ -140,8 +151,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/atm/servlet/Servlet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="20" column="9" selection-start-line="20" selection-start-column="9" selection-end-line="20" selection-end-column="9" />
+            <state relative-caret-position="136">
+              <caret line="16" column="99" selection-start-line="16" selection-start-column="99" selection-end-line="16" selection-end-column="99" />
             </state>
           </provider>
         </entry>
@@ -149,20 +160,33 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/atm/util/DBUtil.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="408">
               <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+=======
+            <state relative-caret-position="119">
+              <caret line="9" column="46" selection-start-line="9" selection-start-column="46" selection-end-line="9" selection-end-column="46" />
+>>>>>>> dev
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/index.jsp">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="238">
               <caret line="14" selection-start-line="14" selection-end-line="14" />
+=======
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/86112034-e54f-4bd7-981b-541c23556abb/console.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="19" selection-start-column="19" selection-end-column="19" />
+>>>>>>> dev
             </state>
           </provider>
         </entry>
@@ -170,6 +194,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/database/test_testtable.sql">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="153">
               <caret line="9" column="17" selection-end-line="49" />
             </state>
@@ -181,6 +206,10 @@
           <provider selected="true" editor-type-id="text-editor">
             <state>
               <caret column="23" selection-start-column="23" selection-end-column="23" />
+=======
+            <state relative-caret-position="306">
+              <caret line="18" column="40" selection-start-line="18" selection-start-column="40" selection-end-line="18" selection-end-column="40" />
+>>>>>>> dev
             </state>
           </provider>
         </entry>
@@ -194,8 +223,14 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/ba68a225-59ae-4970-b679-9b122f27461e/console.sql" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/../../Schoolwork/Praktikum_git/developerA_workingDirectory/Aufgabe_HelloWorld/Hello.java" />
         <option value="$PROJECT_DIR$/src/atm/util/DBUtil.java" />
+=======
+        <option value="$PROJECT_DIR$/src/atm/util/DBUtil.java" />
+        <option value="$PROJECT_DIR$/src/atm/servlet/Servlet.java" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/86112034-e54f-4bd7-981b-541c23556abb/console.sql" />
+>>>>>>> dev
       </list>
     </option>
   </component>
@@ -214,6 +249,10 @@
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-10" />
+<<<<<<< HEAD
+=======
+    <option name="y" value="-10" />
+>>>>>>> dev
     <option name="width" value="980" />
     <option name="height" value="1040" />
   </component>
@@ -222,6 +261,10 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+<<<<<<< HEAD
+=======
+      <pane id="PackagesPane" />
+>>>>>>> dev
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -249,6 +292,23 @@
             <path>
               <item name="ATMWebApplication" type="b2602c69:ProjectViewProjectNode" />
               <item name="ATMWebApplication" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
+=======
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="atm" type="462c0819:PsiDirectoryNode" />
+              <item name="servlet" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ATMWebApplication" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ATMWebApplication" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="atm" type="462c0819:PsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ATMWebApplication" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ATMWebApplication" type="462c0819:PsiDirectoryNode" />
+>>>>>>> dev
               <item name="web" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -273,14 +333,21 @@
           <select />
         </subPane>
       </pane>
+<<<<<<< HEAD
       <pane id="PackagesPane" />
+=======
+>>>>>>> dev
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="mysql" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+<<<<<<< HEAD
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538130389073" />
+=======
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538117477283" />
+>>>>>>> dev
     <property name="database.console.LAST_STATE" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
@@ -400,12 +467,18 @@
       <option name="presentableId" value="Default" />
       <updated>1538112020313</updated>
       <workItem from="1538112021471" duration="1688000" />
+<<<<<<< HEAD
       <workItem from="1538113896108" duration="1433000" />
       <workItem from="1538117217638" duration="241000" />
       <workItem from="1538129949172" duration="671000" />
       <workItem from="1538140328319" duration="641000" />
       <workItem from="1539855354825" duration="1787000" />
       <workItem from="1540192588559" duration="1336000" />
+=======
+      <workItem from="1538113896108" duration="3082000" />
+      <workItem from="1539157132943" duration="109000" />
+      <workItem from="1540198635443" duration="2578000" />
+>>>>>>> dev
     </task>
     <task id="LOCAL-00001" summary="puschdebeh">
       <created>1538114078672</created>
@@ -414,24 +487,41 @@
       <option name="project" value="LOCAL" />
       <updated>1538114078672</updated>
     </task>
+<<<<<<< HEAD
     <task id="LOCAL-00002" summary="another DB">
       <created>1538130351040</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
       <updated>1538130351040</updated>
+=======
+    <task id="LOCAL-00002" summary="push db">
+      <created>1538116551969</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1538116551969</updated>
+>>>>>>> dev
     </task>
     <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="7797000" />
+=======
+    <option name="totallyTimeSpent" value="7457000" />
+>>>>>>> dev
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
+<<<<<<< HEAD
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.27315435" />
+=======
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24899329" />
+>>>>>>> dev
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -460,7 +550,11 @@
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="right" id="Maven Projects" order="5" />
+<<<<<<< HEAD
       <window_info anchor="right" id="Database" order="6" weight="0.29932886" />
+=======
+      <window_info anchor="right" id="Database" order="6" visible="true" weight="0.18590604" />
+>>>>>>> dev
       <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info anchor="right" id="Theme Preview" order="8" />
     </layout>
@@ -473,6 +567,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="puschdebeh" />
+<<<<<<< HEAD
     <MESSAGE value="another DB" />
     <option name="LAST_COMMIT_MESSAGE" value="another DB" />
   </component>
@@ -492,12 +587,21 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/atm/servlet/Servlet.java">
+=======
+    <MESSAGE value="push db" />
+    <option name="LAST_COMMIT_MESSAGE" value="push db" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="das://ba68a225-59ae-4970-b679-9b122f27461e/schema/test/table/testtable" />
+    <entry file="file://$PROJECT_DIR$/database/test_testtable.sql">
+>>>>>>> dev
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="20" column="9" selection-start-line="20" selection-start-column="9" selection-end-line="20" selection-end-column="9" />
+        <state relative-caret-position="306">
+          <caret line="18" column="40" selection-start-line="18" selection-start-column="40" selection-end-line="18" selection-end-column="40" />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/web/index.jsp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
@@ -509,11 +613,27 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="9" column="17" selection-end-line="49" />
+=======
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/ba68a225-59ae-4970-b679-9b122f27461e/console.sql">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ATMWebApplication.iml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/e2451d6b-e05e-402e-8d97-2cb5236486e2/console.sql">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/atm/servlet/Servlet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="16" column="99" selection-start-line="16" selection-start-column="99" selection-end-line="16" selection-end-column="99" />
+>>>>>>> dev
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/ba68a225-59ae-4970-b679-9b122f27461e/console.sql">
+    <entry file="file://$PROJECT_DIR$/src/atm/util/DBUtil.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state>
           <caret column="23" selection-start-column="23" selection-end-column="23" />
         </state>
@@ -526,6 +646,17 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+=======
+        <state relative-caret-position="119">
+          <caret line="9" column="46" selection-start-line="9" selection-start-column="46" selection-end-line="9" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/86112034-e54f-4bd7-981b-541c23556abb/console.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="19" selection-start-column="19" selection-end-column="19" />
+>>>>>>> dev
         </state>
       </provider>
     </entry>

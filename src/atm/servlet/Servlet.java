@@ -14,7 +14,7 @@ import java.io.IOException;
 public class Servlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getParameter("send") != null) {
-            if (DBUtil.executeSql("INSERT INTO testtable VALUES ('testentry')")) {
+            if (DBUtil.executeSql("INSERT INTO user VALUES (1337, 'Hans', 'Wurst', 'Pa55w0rt', 2000)")) {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/entrySucc.jsp");
                 dispatcher.forward(request, response);
             }
