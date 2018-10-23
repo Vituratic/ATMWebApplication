@@ -28,7 +28,11 @@
             balanceEuro = balanceInCent / 100;
             balanceCents = balanceInCent - balanceEuro * 100;
         }
-        out.println("Your balance: " + balanceEuro + "," + balanceCents + "€");
+        if (balanceCents > 9) {
+            out.println("Your balance: " + balanceEuro + "," + balanceCents + "€");
+        } else {
+            out.println("Your balance: " + balanceEuro + ",0" + balanceCents + "€");
+        }
     } else {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
         dispatcher.forward(request, response);
