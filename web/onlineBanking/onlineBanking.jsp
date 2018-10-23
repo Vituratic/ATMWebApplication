@@ -20,11 +20,19 @@
     }
     if (kontonummer != null) {
         ResultSet resultSet = DBUtil.executeSqlWithResultSet("SELECT Kontostand FROM user WHERE Kontonummer=" + kontonummer);
-        int balance = 0;
+        int balanceInCent = 0;
+        int balanceEuros = 0;
+        int balanceCents = 0;
         if (resultSet.next()) {
-            balance = (resultSet.getInt("Kontostand"));
+            balanceInCent = (resultSet.getInt("Kontostand"));
+            balanceEuros = balanceInCent / 100;
+            balanceCents = balanceInCent - balanceEuros * 100;
         }
-        out.println("Your balance: " + balance);
+        if (balanceCents > 9) {
+            out.println("Your balance: " + balanceEuros + "," + balanceCents + "€");
+        } else {
+            out.println("Your balance: " + balanceEuros + ",0" + balanceCents + "€");
+        }
     } else {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
         dispatcher.forward(request, response);

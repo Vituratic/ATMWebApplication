@@ -15,10 +15,19 @@ public class requestMethods {
     public static void wireTransfer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher;
         System.out.print(request.getParameter("amount"));
-        int amount = Integer.parseInt(request.getParameter("amount"));
+        String amount = request.getParameter("amount");
         String accNumber = request.getParameter("accNumber");
 
-        if (amount < 0){
+        String inputToDeposit = null;
+        if (!amount.contains(".")) {
+            inputToDeposit = amount + "00";
+        } else {
+            String[] inputToDepositSplit = amount.replace('.', 'a').split("a");
+            inputToDeposit = inputToDepositSplit[0] + inputToDepositSplit[1];
+        }
+        final int finalAmount = Integer.parseInt(inputToDeposit);
+
+        if (finalAmount < 0){
             return;
         }
 
@@ -30,8 +39,8 @@ public class requestMethods {
             dispatcher = request.getRequestDispatcher("/onlineBanking/notLoggedIn.jsp");
         }
 
-        String sql1 = "UPDATE user  SET Kontostand = Kontostand + " + amount + " WHERE Kontonummer=" + accNumber;
-        String sql2 = "UPDATE user  SET Kontostand = Kontostand - " + amount + " WHERE Kontonummer=" + Servlet.Connection.getConnectionAccId(request.getSession());
+        String sql1 = "UPDATE user  SET Kontostand = Kontostand + " + finalAmount + " WHERE Kontonummer=" + accNumber;
+        String sql2 = "UPDATE user  SET Kontostand = Kontostand - " + finalAmount + " WHERE Kontonummer=" + Servlet.Connection.getConnectionAccId(request.getSession());
         DBUtil.executeSql(sql1);
         DBUtil.executeSql(sql2);
 
