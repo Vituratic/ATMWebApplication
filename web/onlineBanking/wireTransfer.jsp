@@ -12,7 +12,7 @@
         <label for="Amount"><b>Amount</b></label>
         <input type="text" placeholder="AmountinEUR" name="amount" required>€<br>
 
-        <button type="submit" id="WireTransfer" name="WireTransfer" >Login</button>
+        <button type="submit" id="wireTransfer" name="wireTransfer" >confirm</button>
     </div>
 </form>
 </body>

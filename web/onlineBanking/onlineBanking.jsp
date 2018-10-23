@@ -30,9 +30,11 @@
         dispatcher.forward(request, response);
     }
 %><br>
-<button type="submit" id="wireTransfer" name="wireTransfer" >Wire Transfer</button><br>
-<button type="submit" id="accLogs" name="accLogs" >Account Logs</button><br>
-<button type="submit" id="logout" name="logout" >Logout</button><br>
+<form method="post" action="${pageContext.request.contextPath}/Servlet">
+    <button type="submit" id="wireTransferPort" name="wireTransferPort" >Wire Transfer</button><br>
+    <button type="submit" id="accLogs" name="accLogs" >Account Logs</button><br>
+    <button type="submit" id="logout" name="logout" >Logout</button><br>
+</form>
 </body>
 </html>
 

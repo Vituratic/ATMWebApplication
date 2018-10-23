@@ -22,11 +22,12 @@ public class Servlet extends HttpServlet {
     public static ArrayList<Connection> connections = new ArrayList<>();
     public static ArrayList<Connection> authenticatedList = new ArrayList<>();
     public static boolean isAuthenticated(HttpSession session){
-        if (authenticatedList.contains(session)){
-            return true;
-        }else{
-            return false;
+        for (Connection connection:authenticatedList) {
+            if (connection.session.equals(session)){
+                return true;
+            }
         }
+        return false;
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -76,6 +77,11 @@ public class Servlet extends HttpServlet {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/onlineBanking.jsp");
                 dispatcher.forward(request, response);
             }
+        }
+
+        if (request.getParameter("wireTransferPort") != null){
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/wireTransfer.jsp");
+            dispatcher.forward(request, response);
         }
 
         if (request.getParameter("wireTransfer") != null){
