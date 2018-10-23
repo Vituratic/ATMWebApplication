@@ -19,5 +19,8 @@
     <input type="number" name="amountToWithdraw" value=""><br>
     <input type="submit" id="withdraw" name="withdraw" value="Withdraw">
 </form>
+<form method="post" action="atm.jsp">
+    <input type="submit" id="cancelWithdrawal" name="cancelWithdrawal" value="Cancel Withdrawal">
+</form>
 </body>
 </html>
