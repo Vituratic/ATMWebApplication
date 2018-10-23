@@ -60,7 +60,7 @@ public class Servlet extends HttpServlet {
             String psw = request.getParameter("psw");
 
             if (authenticate(uname, psw)){
-                authenticatedList.add(new Connection("1337", request.getSession()));
+                authenticatedList.add(new Connection(uname, request.getSession()));
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
                 dispatcher.forward(request, response);
             }
@@ -71,7 +71,7 @@ public class Servlet extends HttpServlet {
             String psw = request.getParameter("psw");
 
             if (authenticate(uname, psw)){
-                authenticatedList.add(new Connection("1337", null));
+                authenticatedList.add(new Connection(uname, request.getSession()));
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/onlineBanking.jsp");
                 dispatcher.forward(request, response);
             }
