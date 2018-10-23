@@ -2,6 +2,7 @@ package atm.util;
 
 import com.mysql.jdbc.Driver;
 
+import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -32,5 +33,18 @@ public class DBUtil {
             return true;
         }
         return false;
+    }
+
+    public static ResultSet executeSqlWithResultSet(final String sql) {
+        try {
+            final Driver driver = new Driver();
+            DriverManager.registerDriver(driver);
+            final Connection connection = DriverManager.getConnection(URL, USER, PASS);
+            final PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            final ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet;
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
