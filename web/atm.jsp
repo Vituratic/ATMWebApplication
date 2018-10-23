@@ -11,21 +11,33 @@
     Bank of Trust
 </h1>
 <%
-    ResultSet resultSet = DBUtil.executeSqlWithResultSet("SELECT Kontostand FROM user WHERE Kontonummer=1337");
-    int balance = 0;
-    if (resultSet.next()) {
-        balance = (resultSet.getInt("Kontostand"));
+    String kontonummer = null;
+    for (Servlet.Connection connection : Servlet.authenticatedList) {
+        if (connection.session.equals(request.getSession())) {
+            kontonummer = connection.kontoNr;
+            break;
+        }
     }
-    out.println("Your balance: " + balance);
+    if (kontonummer != null) {
+        ResultSet resultSet = DBUtil.executeSqlWithResultSet("SELECT Kontostand FROM user WHERE Kontonummer=" + kontonummer);
+        int balance = 0;
+        if (resultSet.next()) {
+            balance = (resultSet.getInt("Kontostand"));
+        }
+        out.println("Your balance: " + balance);
+    } else {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+        dispatcher.forward(request, response);
+    }
 %>
 <p></p>
-<form method="post" action="withdrawal.jsp">
+<form method="post" action="${pageContext.request.contextPath}/Servlet">
     <input type="submit" id="withdrawal" name="withdrawal" value="Withdraw"><br>
 </form>
-<form method="post" action="deposit.jsp">
-    <input type="submit" id="deposit" name="deposit" value="Deposit"><br>
+<form method="post" action="${pageContext.request.contextPath}/Servlet">
+    <input type="submit" id="depositForward" name="depositForward" value="Deposit"><br>
 </form>
-<form method="post" action="transactions.jsp">
+<form method="post" action="${pageContext.request.contextPath}/Servlet">
     <input type="submit" id="transactions" name="transactions" value="Last transactions"><br>
 </form>
 </body>

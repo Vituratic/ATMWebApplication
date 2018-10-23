@@ -19,8 +19,8 @@ import java.util.ArrayList;
 
 @WebServlet("/Servlet")
 public class Servlet extends HttpServlet {
-    protected static ArrayList<Connection> connections = new ArrayList<>();
-    protected static ArrayList<Object> authenticatedList = new ArrayList<>();
+    public static ArrayList<Connection> connections = new ArrayList<>();
+    public static ArrayList<Connection> authenticatedList = new ArrayList<>();
     public static boolean isAuthenticated(HttpSession session){
         if (authenticatedList.contains(session)){
             return true;
@@ -41,6 +41,18 @@ public class Servlet extends HttpServlet {
         if (request.getParameter("deposit") != null) {
             handleDeposit(request, response);
         }
+        if (request.getParameter("depositForward") != null) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/deposit.jsp");
+            dispatcher.forward(request, response);
+        }
+        if (request.getParameter("withdrawal") != null) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("withdrawal.jsp");
+            dispatcher.forward(request, response);
+        }
+        if (request.getParameter("transactions") != null) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("transactions.jsp");
+            dispatcher.forward(request, response);
+        }
 
         //loginATM
         if (request.getParameter("loginATM") != null){
@@ -48,7 +60,7 @@ public class Servlet extends HttpServlet {
             String psw = request.getParameter("psw");
 
             if (authenticate(uname, psw)){
-                authenticatedList.add(new Connection("1337", null));
+                authenticatedList.add(new Connection("1337", request.getSession()));
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
                 dispatcher.forward(request, response);
             }
@@ -77,8 +89,12 @@ public class Servlet extends HttpServlet {
             dispatcher.forward(request, response);
             return;
         }
-        //TODO
-        String kontonummer = "1337";
+        String kontonummer = "";
+        for (Connection connection : connections) {
+            if (connection.session.equals(request.getSession())) {
+                kontonummer = connection.kontoNr;
+            }
+        }
         String sql = "SELECT Kontostand FROM user WHERE Kontonummer=" + kontonummer;
         final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql);
         try {
@@ -117,7 +133,12 @@ public class Servlet extends HttpServlet {
             dispatcher.forward(request, response);
             return;
         }
-        String kontonummer = "1337"; //TODO Remove
+        String kontonummer = "";
+        for (Connection connection : connections) {
+            if (connection.session.equals(request.getSession())) {
+                kontonummer = connection.kontoNr;
+            }
+        }
         String sql = "SELECT Kontostand FROM user WHERE Kontonummer=" + kontonummer;
         final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql);
         try {
@@ -169,9 +190,9 @@ public class Servlet extends HttpServlet {
     }
 
     //Hilfsklasse
-    protected static class Connection {
-        private String kontoNr;
-        private HttpSession session;
+    public static class Connection {
+        public String kontoNr;
+        public HttpSession session;
 
         protected Connection(String kontoNr, HttpSession session){
             this.kontoNr = kontoNr;
@@ -198,7 +219,4 @@ public class Servlet extends HttpServlet {
             return null;
         }
     }
-
-
-
 }
