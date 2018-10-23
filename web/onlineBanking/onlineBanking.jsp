@@ -11,13 +11,24 @@
     Bank of Trust
 </h1>
 <%
-    request.getSession();
-    ResultSet resultSet = DBUtil.executeSqlWithResultSet("SELECT Kontostand FROM user WHERE Kontonummer=1337");
-    int balance = 0;
-    if (resultSet.next()) {
-        balance = (resultSet.getInt("Kontostand"));
+    String kontonummer = null;
+    for (Servlet.Connection connection : Servlet.authenticatedList) {
+        if (connection.session.equals(request.getSession())) {
+            kontonummer = connection.kontoNr;
+            break;
+        }
     }
-    out.println("Your balance: " + balance);
+    if (kontonummer != null) {
+        ResultSet resultSet = DBUtil.executeSqlWithResultSet("SELECT Kontostand FROM user WHERE Kontonummer=" + kontonummer);
+        int balance = 0;
+        if (resultSet.next()) {
+            balance = (resultSet.getInt("Kontostand"));
+        }
+        out.println("Your balance: " + balance);
+    } else {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+        dispatcher.forward(request, response);
+    }
 %><br>
 <button type="submit" id="wireTransfer" name="wireTransfer" >Wire Transfer</button><br>
 <button type="submit" id="accLogs" name="accLogs" >Account Logs</button><br>
