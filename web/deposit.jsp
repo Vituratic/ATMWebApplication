@@ -47,8 +47,8 @@
     <input type="number" min="0" step="0.01" data-number-to-be-fixed="2" data-number-stepfactor="100" name="amountToDeposit" value=""><br>
     <input type="submit" id="deposit" name="deposit" value="Deposit">
 </form>
-<form method="post" action="atm.jsp">
-    <input type="submit" name="cancel" value="Cancel Deposit">
+<form method="post" action="${pageContext.request.contextPath}/Servlet">
+    <input type="submit" name="backToATM" value="Cancel Deposit">
 </form>
 </body>
 </html>

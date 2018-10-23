@@ -10,6 +10,9 @@
 <h1>
     Bank of Trust
 </h1>
+<form method="post" action="${pageContext.request.contextPath}/Servlet">
+    <input type="submit" id="backToATM" name="backToATM" value="Back to my ATM">
+</form>
 <%
     String kontonummer = null;
     for (Servlet.Connection connection : Servlet.authenticatedList) {
@@ -25,6 +28,15 @@
         dispatcher.forward(request, response);
     }
 %>
-
+<p></p>
+<%
+    out.println("-----------------------------------------------------------------------------------<br/>");
+    final String sql = "SELECT * FROM logs WHERE user=" + kontonummer;
+    final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql);
+    while (resultSet.next()) {
+        final String log = "[" + resultSet.getString("time") + "] : " + resultSet.getString("log") + "<br/>";
+        out.println(log);
+    }
+%>
 </body>
 </html>

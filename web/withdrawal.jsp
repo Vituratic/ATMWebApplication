@@ -47,8 +47,8 @@
     <input type="number" min="0" step="0.01" data-number-to-be-fixed="2" data-number-stepfactor="100" name="amountToWithdraw" value=""><br>
     <input type="submit" id="withdraw" name="withdraw" value="Withdraw">
 </form>
-<form method="post" action="atm.jsp">
-    <input type="submit" id="cancelWithdrawal" name="cancelWithdrawal" value="Cancel Withdrawal">
+<form method="post" action="${pageContext.request.contextPath}/Servlet">
+    <input type="submit" id="backToATM" name="backToATM" value="Cancel Withdrawal">
 </form>
 </body>
 </html>
