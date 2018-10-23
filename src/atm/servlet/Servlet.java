@@ -46,11 +46,11 @@ public class Servlet extends HttpServlet {
             dispatcher.forward(request, response);
         }
         if (request.getParameter("withdrawal") != null) {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("withdrawal.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/withdrawal.jsp");
             dispatcher.forward(request, response);
         }
         if (request.getParameter("transactions") != null) {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("transactions.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/transactions.jsp");
             dispatcher.forward(request, response);
         }
 
