@@ -88,7 +88,14 @@ public class Servlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
-        final int amountToWithdraw = Integer.parseInt(request.getParameter("amountToWithdraw"));
+        String inputToWithdraw = null;
+        if (!request.getParameter("amountToWithdraw").contains(".")) {
+            inputToWithdraw = request.getParameter("amountToWithdraw") + "00";
+        } else {
+            String[] inputToWithdrawSplit = request.getParameter("amountToWithdraw").replace('.', 'a').split("a");
+            inputToWithdraw = inputToWithdrawSplit[0] + inputToWithdrawSplit[1];
+        }
+        final int amountToWithdraw = Integer.parseInt(inputToWithdraw);
         if (amountToWithdraw < 0) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
@@ -98,6 +105,7 @@ public class Servlet extends HttpServlet {
         for (Connection connection : connections) {
             if (connection.session.equals(request.getSession())) {
                 kontonummer = connection.kontoNr;
+                break;
             }
         }
         String sql = "SELECT Kontostand FROM user WHERE Kontonummer=" + kontonummer;
