@@ -10,7 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+
 
 @WebServlet("/Servlet")
 public class Servlet extends HttpServlet {
@@ -30,6 +35,35 @@ public class Servlet extends HttpServlet {
                 dispatcher.forward(request, response);
             }
         }
+        if (request.getParameter("withdraw") != null) {
+            final int amountToWithdraw = Integer.parseInt(request.getParameter("amountToWithdraw"));
+            String kontonummer = "1337";
+            String sql = "SELECT Kontostand FROM user WHERE Kontonummer=" + kontonummer;
+            final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql);
+            try {
+                if (resultSet.next()) {
+                    final int availableMoney = resultSet.getInt("Kontostand");
+                    if (availableMoney > amountToWithdraw) {
+                        final int newBalance = availableMoney - amountToWithdraw;
+                        sql = "UPDATE user SET Kontostand=" + newBalance + " WHERE Kontonummer=" + kontonummer;
+                        if (!DBUtil.executeSql(sql)) {
+                            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+                            dispatcher.forward(request, response);
+                        }
+                    } else {
+                        //TODO Not enough money on account
+                    }
+                } else {
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+                    dispatcher.forward(request, response);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
+            dispatcher.forward(request, response);
+        }
+        
         //login
         if (request.getParameter("login") != null){
             String uname = request.getParameter("uname");
@@ -51,7 +85,8 @@ public class Servlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
+        dispatcher.forward(request, response);
     }
 
     //Hilfsklasse
