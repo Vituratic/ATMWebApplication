@@ -54,12 +54,17 @@ public class Servlet extends HttpServlet {
     }
 
     private void handleWithdrawal(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        if (!isAuthenticated(request.getSession())) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
+        }
         final int amountToWithdraw = Integer.parseInt(request.getParameter("amountToWithdraw"));
         if (amountToWithdraw < 0) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
             return;
         }
+        //TODO
         String kontonummer = "1337";
         String sql = "SELECT Kontostand FROM user WHERE Kontonummer=" + kontonummer;
         final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql);
@@ -89,6 +94,10 @@ public class Servlet extends HttpServlet {
     }
 
     private void handleDeposit(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        if (!isAuthenticated(request.getSession())) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
+        }
         final int amountToDeposit = Integer.parseInt(request.getParameter("amountToDeposit"));
         if (amountToDeposit < 0) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
@@ -138,6 +147,10 @@ public class Servlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (!isAuthenticated(request.getSession())) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
+        }
         RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
         dispatcher.forward(request, response);
     }
