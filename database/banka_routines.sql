@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.12, for Win64 (x86_64)
 --
--- Host: localhost    Database: bankb
+-- Host: localhost    Database: banka
 -- ------------------------------------------------------
 -- Server version	8.0.12
 
@@ -16,11 +16,11 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Dumping events for database 'bankb'
+-- Dumping events for database 'banka'
 --
 
 --
--- Dumping routines for database 'bankb'
+-- Dumping routines for database 'banka'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -32,4 +32,4 @@
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-23 14:50:21
+-- Dump completed on 2018-10-23 14:50:22

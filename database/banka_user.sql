@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.12, for Win64 (x86_64)
 --
--- Host: localhost    Database: bankb
+-- Host: localhost    Database: banka
 -- ------------------------------------------------------
 -- Server version	8.0.12
 
@@ -16,12 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Dumping events for database 'bankb'
+-- Table structure for table `user`
 --
 
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `user` (
+  `Kontonummer` int(11) NOT NULL,
+  `Vorname` varchar(45) DEFAULT NULL,
+  `Nachname` varchar(45) DEFAULT NULL,
+  `Passwort` varchar(45) DEFAULT NULL,
+  `Kontostand` int(11) DEFAULT NULL COMMENT 'in Cent angegeben.',
+  PRIMARY KEY (`Kontonummer`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 --
--- Dumping routines for database 'bankb'
+-- Dumping data for table `user`
 --
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1337,'Hans','Wurst','Pa55w0rt',10000),(6077,'Peter','Winnifred','Pa55w0rt',57067);
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
