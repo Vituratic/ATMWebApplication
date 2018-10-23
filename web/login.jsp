@@ -10,11 +10,11 @@
         <br>
     </div>
     <div class="container">
-        <label for="uname"><b>Kontonummer</b></label>
-        <input type="text" placeholder="Kontonummer eingeben" name="uname" required><br>
+        <label for="uname"><b>Account Number</b></label>
+        <input type="text" placeholder="Account Number" name="uname" required><br>
 
         <label for="psw"><b>Passwort</b></label>
-        <input type="password" placeholder="Passwort eingeben" name="psw" required><br>
+        <input type="password" placeholder="Password" name="psw" required><br>
 
         <button type="submit" id="login" name="loginATM" >Login</button>
     </div>

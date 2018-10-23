@@ -29,6 +29,7 @@ public class Servlet extends HttpServlet {
         }
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         if (request.getParameter("send") != null) {
             if (DBUtil.executeSql("INSERT INTO user VALUES (1337, 'Hans', 'Wurst', 'Pa55w0rt', 2000)")) {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/entrySucc.jsp");
@@ -63,6 +64,27 @@ public class Servlet extends HttpServlet {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/onlineBanking.jsp");
                 dispatcher.forward(request, response);
             }
+        }
+
+        if (request.getParameter("wireTransfer") != null){
+            RequestDispatcher dispatcher;
+            int amount = Integer.parseInt(request.getParameter("Amount"));
+            String accNumber = request.getParameter("accNumber");
+
+            if (amount < 0){
+                return;
+            }
+
+            String sql = "UPDATE user  SET Kontostand = Kontostand + " + amount + " WHERE Kontonummer=" + accNumber +";"+
+                    "UPDATE user  SET Kontostand = Kontostand - " + amount + " WHERE Kontonummer=" + Connection.getConnectionAccId(request.getSession()) + ";";
+
+            if (isAuthenticated(request.getSession())){
+
+                dispatcher = request.getRequestDispatcher("/onlineBanking/onlineBanking.jsp");
+            }else{
+                dispatcher = request.getRequestDispatcher("/onlineBanking/notLoggedIn.jsp");
+            }
+            dispatcher.forward(request, response);
         }
     }
 
