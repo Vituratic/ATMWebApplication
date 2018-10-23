@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 
 import static atm.servlet.Servlet.isAuthenticated;
 
@@ -38,9 +39,9 @@ public class requestMethods {
         }else{
             dispatcher = request.getRequestDispatcher("/onlineBanking/notLoggedIn.jsp");
         }
-
         String sql1 = "UPDATE user  SET Kontostand = Kontostand + " + finalAmount + " WHERE Kontonummer=" + accNumber;
         String sql2 = "UPDATE user  SET Kontostand = Kontostand - " + finalAmount + " WHERE Kontonummer=" + Servlet.Connection.getConnectionAccId(request.getSession());
+        
         DBUtil.executeSql(sql1);
         DBUtil.executeSql(sql2);
 
