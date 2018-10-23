@@ -4,7 +4,7 @@
     <title>ATM Login</title>
 </head>
 <body>
-<form action="action_page.php">
+<form method="post" action="${pageContext.request.contextPath}/Servlet">
     <div class="imgcontainer">
         <img src="img_avatar2.png" alt="ATM Login" class="avatar">
         <br>

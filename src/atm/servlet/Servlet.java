@@ -63,25 +63,35 @@ public class Servlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
             dispatcher.forward(request, response);
         }
-        
+
         //login
         if (request.getParameter("login") != null){
             String uname = request.getParameter("uname");
             String psw = request.getParameter("psw");
             if (authenticate(uname, psw)){
-                authenticatedList.add(new Connection(uname, request.getSession()));
-                //RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
-                //dispatcher.forward(request, response);
+                authenticatedList.add(new Connection("1337", null));
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
+                dispatcher.forward(request, response);
             }
         }
     }
 
     protected boolean authenticate(String uname, String psw){
-        if (psw.equals(DBUtil.executeSql("SELECT Passwort FROM user WHERE Kontonummer = " + uname))){
-            return true;
-        }else{
+        String sql = "SELECT Passwort FROM user WHERE Kontonummer=" + uname;
+        final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql);
+        try {
+            if (resultSet.next()) {
+                if (psw.equals(resultSet.getString("Passwort"))) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
+        return false;
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
