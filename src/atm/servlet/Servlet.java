@@ -1,6 +1,7 @@
 package atm.servlet;
 
 import atm.util.DBUtil;
+import atm.util.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -143,6 +144,7 @@ public class Servlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        Logger.log(kontonummer, "banka", "Withdraw", amountToWithdraw, kontonummer, "banka");
         RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
         dispatcher.forward(request, response);
     }
@@ -190,6 +192,7 @@ public class Servlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
+        Logger.log(kontonummer, "banka", "Deposit", amountToDeposit, kontonummer, "banka");
         RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
         dispatcher.forward(request, response);
     }

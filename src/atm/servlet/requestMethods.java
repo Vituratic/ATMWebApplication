@@ -1,6 +1,8 @@
 package atm.servlet;
 
 import atm.util.DBUtil;
+import atm.util.Logger;
+import sun.rmi.runtime.Log;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -38,12 +40,15 @@ public class requestMethods {
             dispatcher = request.getRequestDispatcher("/onlineBanking/onlineBanking.jsp");
         }else{
             dispatcher = request.getRequestDispatcher("/onlineBanking/notLoggedIn.jsp");
+            dispatcher.forward(request, response);
         }
         String sql1 = "UPDATE user  SET Kontostand = Kontostand + " + finalAmount + " WHERE Kontonummer=" + accNumber;
         String sql2 = "UPDATE user  SET Kontostand = Kontostand - " + finalAmount + " WHERE Kontonummer=" + Servlet.Connection.getConnectionAccId(request.getSession());
 
         DBUtil.executeSql(sql1);
         DBUtil.executeSql(sql2);
+        Logger.log(accNumber, "banka", "WireTransfer", finalAmount, Servlet.Connection.getConnectionAccId(request.getSession()), "banka");
+        Logger.log(Servlet.Connection.getConnectionAccId(request.getSession()), "banka", "WireTransfer", -finalAmount, accNumber, "banka");
 
         dispatcher.forward(request, response);
     }
