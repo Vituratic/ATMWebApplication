@@ -30,10 +30,11 @@ public class requestMethods {
             dispatcher = request.getRequestDispatcher("/onlineBanking/notLoggedIn.jsp");
         }
 
-        String sql = "UPDATE user  SET Kontostand = Kontostand + " + amount + " WHERE Kontonummer=" + accNumber +";"+
-                "UPDATE user  SET Kontostand = Kontostand - " + amount + " WHERE Kontonummer=" + Servlet.Connection.getConnectionAccId(request.getSession()) + ";";
+        String sql1 = "UPDATE user  SET Kontostand = Kontostand + " + amount + " WHERE Kontonummer=" + accNumber;
+        String sql2 = "UPDATE user  SET Kontostand = Kontostand - " + amount + " WHERE Kontonummer=" + Servlet.Connection.getConnectionAccId(request.getSession());
+        DBUtil.executeSql(sql1);
+        DBUtil.executeSql(sql2);
 
-        DBUtil.executeSql(sql);
         dispatcher.forward(request, response);
     }
 }

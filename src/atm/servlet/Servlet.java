@@ -55,6 +55,12 @@ public class Servlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/transactions.jsp");
             dispatcher.forward(request, response);
         }
+        if (request.getParameter("logout") != null){
+            authenticatedList.remove(request.getSession());
+            System.out.println(isAuthenticated(request.getSession()));
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/oBLogin.jsp");
+            dispatcher.forward(request, response);
+        }
 
         //loginATM
         if (request.getParameter("loginATM") != null){
