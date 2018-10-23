@@ -7,6 +7,9 @@
     <title>Recent Transactions</title>
 </head>
 <body>
+<h1>
+    Bank of Trust
+</h1>
 <%
     String kontonummer = null;
     for (Servlet.Connection connection : Servlet.authenticatedList) {
