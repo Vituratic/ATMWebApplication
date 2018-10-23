@@ -17,9 +17,6 @@
         <input type="password" placeholder="Passwort eingeben" name="psw" required><br>
 
         <button type="submit" id="login" name="login" >Login</button>
-        <label>
-            <input type="checkbox" checked="checked" name="remember"> Informationen Speichern
-        </label>
     </div>
 </form>
 </body>

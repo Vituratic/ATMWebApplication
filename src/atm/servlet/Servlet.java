@@ -30,17 +30,20 @@ public class Servlet extends HttpServlet {
                 dispatcher.forward(request, response);
             }
         }
+        //login
         if (request.getParameter("login") != null){
             String uname = request.getParameter("uname");
             String psw = request.getParameter("psw");
             if (authenticate(uname, psw)){
                 authenticatedList.add(new Connection(uname, request.getSession()));
+                //RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
+                //dispatcher.forward(request, response);
             }
         }
     }
 
     protected boolean authenticate(String uname, String psw){
-        if (psw.equals(DBUtil.executeSql("SELECT Passwort FROM user WHERE Kontonummer = 1337"))){
+        if (psw.equals(DBUtil.executeSql("SELECT Passwort FROM user WHERE Kontonummer = " + uname))){
             return true;
         }else{
             return false;
@@ -51,6 +54,7 @@ public class Servlet extends HttpServlet {
 
     }
 
+    //Hilfsklasse
     protected static class Connection {
         private String kontoNr;
         private HttpSession session;
@@ -60,10 +64,15 @@ public class Servlet extends HttpServlet {
             this.session = session;
             connections.add(this);
         }
+
+        //Connection aus KontoNr schließen
         public HttpSession getConnection(String kontoNr){
-            for (Connection:connections) {
-                //Connection aus KontoNr schließen
+            for (int i = 0; i < connections.size(); i++){
+                if (connections.get(i).kontoNr.equals(kontoNr)){
+                    return connections.get(i).session;
+                }
             }
+            return null;
         }
     }
 
