@@ -140,6 +140,13 @@ public class Servlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
+        String inputToDeposit = null;
+        if (!request.getParameter("amountToDeposit").contains(".")) {
+            inputToDeposit = request.getParameter("amountToDeposit") + "00";
+        } else {
+            String[] inputToWithdrawSplit = request.getParameter("amountToDeposit").replace('.', 'a').split("a");
+            inputToDeposit = inputToWithdrawSplit[0] + inputToWithdrawSplit[1];
+        }
         final int amountToDeposit = Integer.parseInt(request.getParameter("amountToDeposit"));
         if (amountToDeposit < 0) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
