@@ -41,7 +41,7 @@ public class requestMethods {
         }
         String sql1 = "UPDATE user  SET Kontostand = Kontostand + " + finalAmount + " WHERE Kontonummer=" + accNumber;
         String sql2 = "UPDATE user  SET Kontostand = Kontostand - " + finalAmount + " WHERE Kontonummer=" + Servlet.Connection.getConnectionAccId(request.getSession());
-        
+
         DBUtil.executeSql(sql1);
         DBUtil.executeSql(sql2);
 
