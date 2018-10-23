@@ -64,13 +64,25 @@ public class Servlet extends HttpServlet {
             dispatcher.forward(request, response);
         }
 
-        //login
-        if (request.getParameter("login") != null){
+        //loginATM
+        if (request.getParameter("loginATM") != null){
             String uname = request.getParameter("uname");
             String psw = request.getParameter("psw");
+
             if (authenticate(uname, psw)){
                 authenticatedList.add(new Connection("1337", null));
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
+                dispatcher.forward(request, response);
+            }
+        }
+        //loginOB
+        if (request.getParameter("loginOB") != null){
+            String uname = request.getParameter("uname");
+            String psw = request.getParameter("psw");
+
+            if (authenticate(uname, psw)){
+                authenticatedList.add(new Connection("1337", null));
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/onlineBanking.jsp");
                 dispatcher.forward(request, response);
             }
         }
@@ -111,10 +123,19 @@ public class Servlet extends HttpServlet {
         }
 
         //Connection aus KontoNr schließen
-        public HttpSession getConnection(String kontoNr){
+        public static HttpSession getConnectionSession(String kontoNr){
             for (int i = 0; i < connections.size(); i++){
                 if (connections.get(i).kontoNr.equals(kontoNr)){
                     return connections.get(i).session;
+                }
+            }
+            return null;
+        }
+
+        public static String getConnectionAccId(HttpSession session){
+            for (int i = 0; i < connections.size(); i++){
+                if (connections.get(i).session.equals(session)){
+                    return connections.get(i).kontoNr;
                 }
             }
             return null;

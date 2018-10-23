@@ -16,7 +16,7 @@
         <label for="psw"><b>Passwort</b></label>
         <input type="password" placeholder="Passwort eingeben" name="psw" required><br>
 
-        <button type="submit" id="login" name="loginATM" >Login</button>
+        <button type="submit" id="login" name="loginOB" >Login</button>
     </div>
 </form>
 </body>
