@@ -154,9 +154,17 @@ public class Servlet extends HttpServlet {
         String inputToWithdraw;
         if (!request.getParameter("amountToWithdraw").contains(".")) {
             inputToWithdraw = request.getParameter("amountToWithdraw") + "00";
+            if (inputToWithdraw.length() > 6) {
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+                dispatcher.forward(request, response);
+            }
         } else {
             String[] inputToWithdrawSplit = request.getParameter("amountToWithdraw").replace('.', 'a').split("a");
             inputToWithdraw = inputToWithdrawSplit[0] + inputToWithdrawSplit[1];
+            if (inputToWithdraw.length() > 8) {
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+                dispatcher.forward(request, response);
+            }
         }
         final long amountToWithdraw = Long.parseLong(inputToWithdraw);
         if (amountToWithdraw < 0) {
@@ -209,9 +217,17 @@ public class Servlet extends HttpServlet {
         String inputToDeposit;
         if (!request.getParameter("amountToDeposit").contains(".")) {
             inputToDeposit = request.getParameter("amountToDeposit") + "00";
+            if (inputToDeposit.length() > 6) {
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+                dispatcher.forward(request, response);
+            }
         } else {
             String[] inputToDepositSplit = request.getParameter("amountToDeposit").replace('.', 'a').split("a");
             inputToDeposit = inputToDepositSplit[0] + inputToDepositSplit[1];
+            if (inputToDeposit.length() > 8) {
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+                dispatcher.forward(request, response);
+            }
         }
         final long amountToDeposit = Long.parseLong(inputToDeposit);
         if (amountToDeposit < 0) {

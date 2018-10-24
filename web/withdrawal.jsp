@@ -51,7 +51,7 @@
         out.println("How much would you like to withdraw?");
     %>
     <br>
-    <input type="number" min="0" step="0.01" data-number-to-be-fixed="2" data-number-stepfactor="100" name="amountToWithdraw" value=""><br>
+    <input type="number" min="0" step="0.01" data-number-to-be-fixed="2" data-number-stepfactor="100" name="amountToWithdraw" maxlength="8" value=""><br>
     <input type="submit" id="withdraw" name="withdraw" value="Withdraw">
 </form>
 <form method="post" action="${pageContext.request.contextPath}/Servlet">
