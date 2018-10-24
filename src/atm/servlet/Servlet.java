@@ -20,10 +20,19 @@ import java.util.ArrayList;
 public class Servlet extends HttpServlet {
     public static ArrayList<Connection> connections = new ArrayList<>();
     public static ArrayList<Connection> authenticatedList = new ArrayList<>();
+    public static ArrayList<Connection> adminList = new ArrayList<>();
 
     public static boolean isAuthenticated(HttpSession session){
         for (Connection connection:authenticatedList) {
             if (connection.session.equals(session)){
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean isAdmin(HttpSession session){
+        for (Servlet.Connection connection : Servlet.adminList) {
+            if (connection.session.equals(session)) {
                 return true;
             }
         }
@@ -89,6 +98,29 @@ public class Servlet extends HttpServlet {
         }
         if (request.getParameter("wireTransfer") != null){
             requestMethods.wireTransfer(request,response);
+        }
+        if (request.getParameter("loginAdmin") != null){
+            final String uname = request.getParameter("uname");
+            final String psw = request.getParameter("psw");
+            final String bank = request.getParameter("bank");
+
+            if (authenticate(uname, psw, bank) && uname.equals("999999999")){
+                adminList.add(new Connection(uname, request.getSession(),bank));
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/adminInterface/adminPage.jsp");
+                dispatcher.forward(request, response);
+            } else {
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+                dispatcher.forward(request, response);
+            }
+        }
+        if (request.getParameter("viewLogs") != null){
+            if (isAdmin(request.getSession())){
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/adminInterface/viewLogsSelection.jsp");
+                dispatcher.forward(request, response);
+            }else{
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+                dispatcher.forward(request, response);
+            }
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
         dispatcher.forward(request, response);
