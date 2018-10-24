@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.12, for Win64 (x86_64)
 --
--- Host: localhost    Database: test
+-- Host: localhost    Database: bankb
 -- ------------------------------------------------------
 -- Server version	8.0.12
 
@@ -16,26 +16,12 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `testtable`
+-- Dumping events for database 'bankb'
 --
 
-DROP TABLE IF EXISTS `testtable`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `testtable` (
-  `teststring` varchar(200) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
 --
--- Dumping data for table `testtable`
+-- Dumping routines for database 'bankb'
 --
-
-LOCK TABLES `testtable` WRITE;
-/*!40000 ALTER TABLE `testtable` DISABLE KEYS */;
-INSERT INTO `testtable` VALUES ('testentry'),('testentry');
-/*!40000 ALTER TABLE `testtable` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -46,4 +32,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-24  8:40:03
+-- Dump completed on 2018-10-24  8:40:01
