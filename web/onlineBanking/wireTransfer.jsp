@@ -1,9 +1,16 @@
+<%@ page import="atm.core.Servlet" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Wire Transfer</title>
 </head>
 <body>
+<%
+    if(!Servlet.isAuthenticated(request.getSession())) {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+        dispatcher.forward(request, response);
+    }
+%>
 <form method="post" action="${pageContext.request.contextPath}/Servlet">
     <div class="container">
         <label for="Account Number"><b>Account Number</b></label>

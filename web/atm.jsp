@@ -1,6 +1,6 @@
 <%@ page import="atm.util.DBUtil" %>
 <%@ page import="java.sql.ResultSet" %>
-<%@ page import="atm.servlet.Servlet" %>
+<%@ page import="atm.core.Servlet" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>

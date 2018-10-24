@@ -1,4 +1,4 @@
-package atm.servlet;
+package atm.core;
 
 import atm.util.DBUtil;
 import atm.util.Logger;
