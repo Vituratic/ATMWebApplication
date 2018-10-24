@@ -38,7 +38,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1337,'Hans','Wurst','Pa55w0rt',10000),(6077,'Peter','Winnifred','Pa55w0rt',57067);
+INSERT INTO `user` VALUES (1337,'Hans','Wurst','Pa55w0rt',20000),(6077,'Peter','Winnifred','Pa55w0rt',191230),(999999999,'Armin','Admin','password',0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-24  7:20:45
+-- Dump completed on 2018-10-24  8:40:01
