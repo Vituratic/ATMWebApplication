@@ -1,10 +1,10 @@
 <%@ page import="atm.util.DBUtil" %>
 <%@ page import="java.sql.ResultSet" %>
-<%@ page import="atm.servlet.Servlet" %>
+<%@ page import="atm.core.Servlet" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="adminStyle.css">
+    <link rel="stylesheet" type="text/css" href="../adminStyle.css">
     <title>Admin Log Page</title>
 </head>
 <body>
@@ -14,12 +14,13 @@
 <br>
 <form method="post" action="${pageContext.request.contextPath}/Servlet">
 
-    <button type="submit" id="viewLogs" name="viewLogs" >View Logs</button><br>
+    <button type="submit" id="viewLogs" name="viewLogs" >View Logs</button><br><br>
 
 
     <div class="container">
+        <%--@declare id="uname"--%>
         <label for="uname"><b>Account Number</b></label>
-        <input type="text" placeholder="Account Number" name="uname" required><br>
+        <input type="text" placeholder="Account Number" name="uname"><br>
 
         <label>Bank</label>
         <select name="bank">
@@ -35,33 +36,41 @@
 </form>
 
 <%
-    String bank = request.getParameter("bank");
-    String kontonummer = request.getParameter("uname");
+    String bank = Servlet.Connection.getConnectionBank(request.getSession());
+    String accNumber = request.getParameter("uname");
     boolean authenticated = false;
 
-    if (bank != null && kontonummer != null) {
+    //if (bank != null) {
         for (Servlet.Connection connection : Servlet.adminList) {
             if (connection.session.equals(request.getSession())) {
                 authenticated = true;
                 break;
             }
         }
-        if (authenticated) {
-            if (kontonummer != null && bank != null) {
-                out.println("Recent transactions of: " + kontonummer);
-            } else {
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
-                dispatcher.forward(request, response);
+        if (accNumber == null){
+            if (authenticated) {
+                out.println("Recent transactions: ");
+                out.println("<p></p>-----------------------------------------------------------------------------------<br/>");
+                final String sql = "SELECT * FROM logs";
+                final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, bank);
+                while (resultSet.next()) {
+                    final String log = "[" + resultSet.getString("time") + "] : " + resultSet.getString("user") + " | " + resultSet.getString("log") + "<br/>";
+                    out.println(log);
+                }
             }
-            out.println("<p></p>-----------------------------------------------------------------------------------<br/>");
-            final String sql = "SELECT * FROM logs WHERE user=" + kontonummer;
-            final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, bank);
-            while (resultSet.next()) {
-                final String log = "[" + resultSet.getString("time") + "] : " + resultSet.getString("log") + "<br/>";
-                out.println(log);
+        }else {
+            if (authenticated) {
+                out.println("Recent transactions of: " + accNumber);
+                out.println("<p></p>-----------------------------------------------------------------------------------<br/>");
+                final String sql = "SELECT * FROM logs WHERE user=" + accNumber;
+                final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, bank);
+                while (resultSet.next()) {
+                    final String log = "[" + resultSet.getString("time") + "] : " + resultSet.getString("user") + " | " + resultSet.getString("log") + "<br/>";
+                    out.println(log);
+                }
             }
         }
-    }
+    //}
 %>
 </body>
 </html>
