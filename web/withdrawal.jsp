@@ -23,11 +23,11 @@
     if (accNumber != null && bank != null) {
         try {
             ResultSet resultSet = DBUtil.executeSqlWithResultSet("SELECT Kontostand FROM user WHERE Kontonummer=" + accNumber, bank);
-            int balanceInCent;
-            int balanceEuro = 0;
-            int balanceCents = 0;
+            long balanceInCent;
+            long balanceEuro = 0;
+            long balanceCents = 0;
             if (resultSet.next()) {
-                balanceInCent = (resultSet.getInt("Kontostand"));
+                balanceInCent = (resultSet.getLong("Kontostand"));
                 balanceEuro = balanceInCent / 100;
                 balanceCents = balanceInCent - balanceEuro * 100;
             }

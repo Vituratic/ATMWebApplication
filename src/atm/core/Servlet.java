@@ -158,7 +158,7 @@ public class Servlet extends HttpServlet {
             String[] inputToWithdrawSplit = request.getParameter("amountToWithdraw").replace('.', 'a').split("a");
             inputToWithdraw = inputToWithdrawSplit[0] + inputToWithdrawSplit[1];
         }
-        final int amountToWithdraw = Integer.parseInt(inputToWithdraw);
+        final long amountToWithdraw = Long.parseLong(inputToWithdraw);
         if (amountToWithdraw < 0) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
@@ -177,9 +177,9 @@ public class Servlet extends HttpServlet {
         final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, bank);
         try {
             if (resultSet.next()) {
-                final int availableMoney = resultSet.getInt("Kontostand");
+                final long availableMoney = resultSet.getLong("Kontostand");
                 if (availableMoney > amountToWithdraw) {
-                    final int newBalance = availableMoney - amountToWithdraw;
+                    final long newBalance = availableMoney - amountToWithdraw;
                     sql = "UPDATE user SET Kontostand=" + newBalance + " WHERE Kontonummer=" + accNumber;
                     if (!DBUtil.executeSql(sql, bank)) {
                         RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
@@ -213,7 +213,7 @@ public class Servlet extends HttpServlet {
             String[] inputToDepositSplit = request.getParameter("amountToDeposit").replace('.', 'a').split("a");
             inputToDeposit = inputToDepositSplit[0] + inputToDepositSplit[1];
         }
-        final int amountToDeposit = Integer.parseInt(inputToDeposit);
+        final long amountToDeposit = Long.parseLong(inputToDeposit);
         if (amountToDeposit < 0) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
@@ -231,8 +231,8 @@ public class Servlet extends HttpServlet {
         final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, bank);
         try {
             if (resultSet.next()) {
-                final int availableMoney = resultSet.getInt("Kontostand");
-                final int newBalance = availableMoney + amountToDeposit;
+                final long availableMoney = resultSet.getLong("Kontostand");
+                final long newBalance = availableMoney + amountToDeposit;
                 sql = "UPDATE user SET Kontostand=" + newBalance + " WHERE Kontonummer=" + accNumber;
                 if (!DBUtil.executeSql(sql, bank)) {
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
@@ -316,9 +316,9 @@ public class Servlet extends HttpServlet {
         }
 
         public static boolean removeConnection(HttpSession session){
-            for (int i = 0; i < connections.size(); i++){
-                if (connections.get(i).session.equals(session)){
-                    connections.remove(i);
+            for (Connection connection : connections){
+                if (connection.session.equals(session)){
+                    connections.remove(connection);
                     return true;
                 }
             }

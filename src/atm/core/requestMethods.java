@@ -26,7 +26,7 @@ public class requestMethods {
             final String[] inputToDepositSplit = amount.replace('.', 'a').split("a");
             inputToDeposit = inputToDepositSplit[0] + inputToDepositSplit[1];
         }
-        final int finalAmount = Integer.parseInt(inputToDeposit);
+        final long finalAmount = Long.parseLong(inputToDeposit);
         if (finalAmount < 0){
             return;
         }
@@ -63,7 +63,7 @@ public class requestMethods {
             final String[] inputToDepositSplit = amount.replace('.', 'a').split("a");
             inputToDeposit = inputToDepositSplit[0] + inputToDepositSplit[1];
         }
-        final int finalAmount = Integer.parseInt(inputToDeposit);
+        final long finalAmount = Long.parseLong(inputToDeposit);
         if (finalAmount < 0){
             return;
         }
