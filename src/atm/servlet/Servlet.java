@@ -60,10 +60,12 @@ public class Servlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
             dispatcher.forward(request, response);
         }
-        if (request.getParameter("logout") != null){
-            authenticatedList.remove(request.getSession());
-            System.out.println(isAuthenticated(request.getSession()));
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/oBLogin.jsp");
+        if (request.getParameter("backToOb") != null) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/onlineBanking.jsp");
+            dispatcher.forward(request, response);
+        }
+        if (request.getParameter("accLogs") != null) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/oBAccLogs.jsp");
             dispatcher.forward(request, response);
         }
 
@@ -256,6 +258,16 @@ public class Servlet extends HttpServlet {
                 }
             }
             return null;
+        }
+
+        public static boolean removeConnection(HttpSession session){
+            for (int i = 0; i < connections.size(); i++){
+                if (connections.get(i).session.equals(session)){
+                    connections.remove(i);
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

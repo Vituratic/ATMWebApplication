@@ -5,10 +5,6 @@
 </head>
 <body>
 <form method="post" action="${pageContext.request.contextPath}/Servlet">
-    <div class="imgcontainer">
-        <img src="img_avatar2.png" alt="ATM Login" class="avatar">
-        <br>
-    </div>
     <div class="container">
         <label for="uname"><b>Account Number</b></label>
         <input type="text" placeholder="Account Number" name="uname" required><br>
