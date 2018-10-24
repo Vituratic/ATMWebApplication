@@ -70,6 +70,7 @@ public class Servlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/oBAccLogs.jsp");
             dispatcher.forward(request, response);
         }
+
         if (request.getParameter("loginATM") != null){
             final String uname = request.getParameter("uname");
             final String psw = request.getParameter("psw");
@@ -99,6 +100,17 @@ public class Servlet extends HttpServlet {
         if (request.getParameter("wireTransfer") != null){
             requestMethods.wireTransfer(request,response);
         }
+        if (request.getParameter("adminWireTransfer") != null){
+            if (isAdmin(request.getSession())){
+                requestMethods.adminWireTransfer(request,response);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/adminInterface/adminPage.jsp");
+                dispatcher.forward(request, response);
+            }else{
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+                dispatcher.forward(request, response);
+            }
+
+        }
         if (request.getParameter("loginAdmin") != null){
             final String uname = request.getParameter("uname");
             final String psw = request.getParameter("psw");
@@ -121,6 +133,14 @@ public class Servlet extends HttpServlet {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                 dispatcher.forward(request, response);
             }
+        }
+        if (request.getParameter("backToAdminPage") != null){
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/adminInterface/adminPage.jsp");
+            dispatcher.forward(request, response);
+        }
+        if (request.getParameter("makeWireTransaction") != null){
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/adminInterface/makeWireTransaction.jsp");
+            dispatcher.forward(request, response);
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
         dispatcher.forward(request, response);
