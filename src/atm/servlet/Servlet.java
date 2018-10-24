@@ -144,7 +144,7 @@ public class Servlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        Logger.log(accNumber, "banka", "Withdraw", amountToWithdraw, accNumber, "banka");
+        Logger.log(accNumber, bank, "Withdraw", amountToWithdraw, accNumber, bank);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
         dispatcher.forward(request, response);
     }
@@ -194,7 +194,7 @@ public class Servlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
-        Logger.log(accNumber, "banka", "Deposit", amountToDeposit, accNumber, "banka");
+        Logger.log(accNumber, bank, "Deposit", amountToDeposit, accNumber, bank);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
         dispatcher.forward(request, response);
     }
