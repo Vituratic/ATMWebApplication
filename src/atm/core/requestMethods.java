@@ -1,4 +1,4 @@
-package atm.servlet;
+package atm.core;
 
 import atm.util.DBUtil;
 import atm.util.Logger;
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-import static atm.servlet.Servlet.isAuthenticated;
+import static atm.core.Servlet.isAuthenticated;
 
 public class requestMethods {
 
