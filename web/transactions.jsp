@@ -1,7 +1,7 @@
 <%@ page import="atm.util.DBUtil" %>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="atm.servlet.Servlet" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Recent Transactions</title>
@@ -15,29 +15,31 @@
 </form>
 <%
     String bank = null;
-    String kontonummer = null;
+    String accNumber = null;
     for (Servlet.Connection connection : Servlet.authenticatedList) {
         if (connection.session.equals(request.getSession())) {
-            kontonummer = connection.kontoNr;
+            accNumber = connection.accNumber;
             bank = connection.bank;
             break;
         }
     }
-    if (kontonummer != null && bank != null) {
-        out.println("Recent transactions of: " + kontonummer);
+    if (accNumber != null && bank != null) {
+        try {
+            out.println("Recent transactions of: " + accNumber);
+            out.println("<p></p>-----------------------------------------------------------------------------------<br/>");
+            final String sql = "SELECT * FROM logs WHERE user=" + accNumber;
+            final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, bank);
+            while (resultSet.next()) {
+                final String log = "[" + resultSet.getString("time") + "] : " + resultSet.getString("log") + "<br/>";
+                out.println(log);
+            }
+        } catch (Exception e) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
+        }
     } else {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
         dispatcher.forward(request, response);
-    }
-%>
-<p></p>
-<%
-    out.println("-----------------------------------------------------------------------------------<br/>");
-    final String sql = "SELECT * FROM logs WHERE user=" + kontonummer;
-    final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, bank);
-    while (resultSet.next()) {
-        final String log = "[" + resultSet.getString("time") + "] : " + resultSet.getString("log") + "<br/>";
-        out.println(log);
     }
 %>
 </body>

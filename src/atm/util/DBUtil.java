@@ -13,10 +13,10 @@ public class DBUtil {
     private static final String USER = "root";
     private static final String PASS = "Best_Team1337";
 
-    public static boolean executeSql(final String sql, String targetBank) {
+    public static boolean executeSql(final String sql, final String targetBank) {
         final String URL = URLHOLDER.replace("PLACEHOLDER", targetBank);
         try {
-            Driver driver = new Driver();
+            final Driver driver = new Driver();
             DriverManager.registerDriver(driver);
             final Connection connection = DriverManager.getConnection(URL, USER, PASS);
             final PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -27,23 +27,19 @@ public class DBUtil {
         }
     }
 
-    public static boolean verifyLogin(final String kontonummer, final String password, String targetBank) {
+    public static boolean verifyLogin(final String kontonummer, final String password, final String targetBank) {
         final String sql = "SELECT * FROM user WHERE Kontonummer=" + kontonummer + " AND Passwort='" + password + "'";
-        if (executeSql(sql, targetBank)) {
-            return true;
-        }
-        return false;
+        return executeSql(sql, targetBank);
     }
 
-    public static ResultSet executeSqlWithResultSet(final String sql, String targetBank) {
+    public static ResultSet executeSqlWithResultSet(final String sql, final String targetBank) {
         final String URL = URLHOLDER.replace("PLACEHOLDER", targetBank);
         try {
             final Driver driver = new Driver();
             DriverManager.registerDriver(driver);
             final Connection connection = DriverManager.getConnection(URL, USER, PASS);
             final PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            final ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet;
+            return preparedStatement.executeQuery();
         } catch (Exception e) {
             return null;
         }

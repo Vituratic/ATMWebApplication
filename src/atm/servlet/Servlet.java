@@ -99,7 +99,7 @@ public class Servlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
-        String inputToWithdraw = null;
+        String inputToWithdraw;
         if (!request.getParameter("amountToWithdraw").contains(".")) {
             inputToWithdraw = request.getParameter("amountToWithdraw") + "00";
         } else {
@@ -113,22 +113,22 @@ public class Servlet extends HttpServlet {
             return;
         }
         String bank = "";
-        String kontonummer = "";
+        String accNumber = "";
         for (Connection connection : connections) {
             if (connection.session.equals(request.getSession())) {
-                kontonummer = connection.kontoNr;
+                accNumber = connection.accNumber;
                 bank = connection.bank;
                 break;
             }
         }
-        String sql = "SELECT Kontostand FROM user WHERE Kontonummer=" + kontonummer;
+        String sql = "SELECT Kontostand FROM user WHERE Kontonummer=" + accNumber;
         final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, bank);
         try {
             if (resultSet.next()) {
                 final int availableMoney = resultSet.getInt("Kontostand");
                 if (availableMoney > amountToWithdraw) {
                     final int newBalance = availableMoney - amountToWithdraw;
-                    sql = "UPDATE user SET Kontostand=" + newBalance + " WHERE Kontonummer=" + kontonummer;
+                    sql = "UPDATE user SET Kontostand=" + newBalance + " WHERE Kontonummer=" + accNumber;
                     if (!DBUtil.executeSql(sql, bank)) {
                         RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                         dispatcher.forward(request, response);
@@ -144,7 +144,7 @@ public class Servlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        Logger.log(kontonummer, "banka", "Withdraw", amountToWithdraw, kontonummer, "banka");
+        Logger.log(accNumber, "banka", "Withdraw", amountToWithdraw, accNumber, "banka");
         RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
         dispatcher.forward(request, response);
     }
@@ -154,7 +154,7 @@ public class Servlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
-        String inputToDeposit = null;
+        String inputToDeposit;
         if (!request.getParameter("amountToDeposit").contains(".")) {
             inputToDeposit = request.getParameter("amountToDeposit") + "00";
         } else {
@@ -168,20 +168,20 @@ public class Servlet extends HttpServlet {
             return;
         }
         String bank = "";
-        String kontonummer = "";
+        String accNumber = "";
         for (Connection connection : connections) {
             if (connection.session.equals(request.getSession())) {
-                kontonummer = connection.kontoNr;
+                accNumber = connection.accNumber;
                 bank = connection.bank;
             }
         }
-        String sql = "SELECT Kontostand FROM user WHERE Kontonummer=" + kontonummer;
+        String sql = "SELECT Kontostand FROM user WHERE Kontonummer=" + accNumber;
         final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, bank);
         try {
             if (resultSet.next()) {
                 final int availableMoney = resultSet.getInt("Kontostand");
                 final int newBalance = availableMoney + amountToDeposit;
-                sql = "UPDATE user SET Kontostand=" + newBalance + " WHERE Kontonummer=" + kontonummer;
+                sql = "UPDATE user SET Kontostand=" + newBalance + " WHERE Kontonummer=" + accNumber;
                 if (!DBUtil.executeSql(sql, bank)) {
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                     dispatcher.forward(request, response);
@@ -194,7 +194,7 @@ public class Servlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
-        Logger.log(kontonummer, "banka", "Deposit", amountToDeposit, kontonummer, "banka");
+        Logger.log(accNumber, "banka", "Deposit", amountToDeposit, accNumber, "banka");
         RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
         dispatcher.forward(request, response);
     }
@@ -204,11 +204,7 @@ public class Servlet extends HttpServlet {
         final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, targetBank);
         try {
             if (resultSet.next()) {
-                if (psw.equals(resultSet.getString("Passwort"))) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return psw.equals(resultSet.getString("Passwort"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -228,31 +224,31 @@ public class Servlet extends HttpServlet {
 
     //Hilfsklasse
     public static class Connection {
-        public String kontoNr;
+        public String accNumber;
         public HttpSession session;
         public String bank;
 
-        protected Connection(final String kontoNr, final HttpSession session, final String bank){
-            this.kontoNr = kontoNr;
+        protected Connection(final String accNumber, final HttpSession session, final String bank){
+            this.accNumber = accNumber;
             this.session = session;
             this.bank = bank;
             connections.add(this);
         }
 
         //Connection aus KontoNr schließen
-        public static HttpSession getConnectionSession(final String kontoNr){
-            for (int i = 0; i < connections.size(); i++){
-                if (connections.get(i).kontoNr.equals(kontoNr)){
-                    return connections.get(i).session;
+        public static HttpSession getConnectionSession(final String accNumber){
+            for (Connection connection : connections) {
+                if (connection.accNumber.equals(accNumber)) {
+                    return connection.session;
                 }
             }
             return null;
         }
 
         public static String getConnectionAccId(final HttpSession session){
-            for (int i = 0; i < connections.size(); i++){
-                if (connections.get(i).session.equals(session)){
-                    return connections.get(i).kontoNr;
+            for (Connection connection : connections) {
+                if (connection.session.equals(session)) {
+                    return connection.accNumber;
                 }
             }
             return null;
