@@ -28,7 +28,7 @@ CREATE TABLE `logs` (
   `log` text,
   `time` datetime DEFAULT NULL,
   PRIMARY KEY (`lognumber`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,7 +37,7 @@ CREATE TABLE `logs` (
 
 LOCK TABLES `logs` WRITE;
 /*!40000 ALTER TABLE `logs` DISABLE KEYS */;
-INSERT INTO `logs` VALUES (1,6077,'banka - WireTransfer - 100 - 1337 - banka','2018-10-23 14:16:21'),(2,1337,'banka - WireTransfer - -100 - 6077 - banka','2018-10-23 14:16:21'),(3,1337,'banka - Withdraw - 1000 - 1337 - banka','2018-10-23 14:47:10'),(4,1337,'banka - Deposit - 2500 - 1337 - banka','2018-10-23 14:47:13'),(5,1337,'banka - Deposit - 3500 - 1337 - banka','2018-10-23 14:47:15'),(6,1337,'banka - Deposit - 1279 - 1337 - banka','2018-10-23 14:47:19'),(7,1337,'banka - Withdraw - 1172 - 1337 - banka','2018-10-23 14:47:22'),(8,1337,'banka - Deposit - 593 - 1337 - banka','2018-10-23 14:47:31'),(9,1337,'banka - Withdraw - 2000 - 1337 - banka','2018-10-23 14:47:34'),(10,1337,'banka - Deposit - 4000 - 1337 - banka','2018-10-23 14:47:36');
+INSERT INTO `logs` VALUES (1,6077,'banka - WireTransfer - 100 - 1337 - banka','2018-10-23 14:16:21'),(2,1337,'banka - WireTransfer - -100 - 6077 - banka','2018-10-23 14:16:21'),(3,1337,'banka - Withdraw - 1000 - 1337 - banka','2018-10-23 14:47:10'),(4,1337,'banka - Deposit - 2500 - 1337 - banka','2018-10-23 14:47:13'),(5,1337,'banka - Deposit - 3500 - 1337 - banka','2018-10-23 14:47:15'),(6,1337,'banka - Deposit - 1279 - 1337 - banka','2018-10-23 14:47:19'),(7,1337,'banka - Withdraw - 1172 - 1337 - banka','2018-10-23 14:47:22'),(8,1337,'banka - Deposit - 593 - 1337 - banka','2018-10-23 14:47:31'),(9,1337,'banka - Withdraw - 2000 - 1337 - banka','2018-10-23 14:47:34'),(10,1337,'banka - Deposit - 4000 - 1337 - banka','2018-10-23 14:47:36'),(11,6077,'banka - WireTransfer - 131 - 1337 - banka','2018-10-24 07:27:20'),(12,1337,'banka - WireTransfer - -131 - 6077 - banka','2018-10-24 07:27:20'),(13,1337,'banka - WireTransfer - 19 - 1337 - banka','2018-10-24 07:27:44'),(14,1337,'banka - WireTransfer - -19 - 1337 - banka','2018-10-24 07:27:44'),(15,6077,'banka - WireTransfer - 124 - 1337 - banka','2018-10-24 07:28:16'),(16,1337,'banka - WireTransfer - -124 - 6077 - banka','2018-10-24 07:28:16'),(17,6077,'banka - WireTransfer - 208 - 1337 - banka','2018-10-24 07:28:45'),(18,1337,'banka - WireTransfer - -208 - 6077 - banka','2018-10-24 07:28:45'),(19,1337,'banka - Withdraw - 65 - 1337 - banka','2018-10-24 07:31:15'),(20,1337,'banka - Deposit - 1 - 1337 - banka','2018-10-24 07:31:22'),(21,6077,'banka - WireTransfer - 133700 - 1337 - banka','2018-10-24 08:01:00'),(22,1337,'banka - WireTransfer - -133700 - 6077 - banka','2018-10-24 08:01:00');
 /*!40000 ALTER TABLE `logs` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-24  7:20:44
+-- Dump completed on 2018-10-24  8:40:01
