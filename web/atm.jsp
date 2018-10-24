@@ -11,16 +11,18 @@
     Bank of Trust
 </h1>
 <%
+    String bank = null;
     String kontonummer = null;
     for (Servlet.Connection connection : Servlet.authenticatedList) {
         if (connection.session.equals(request.getSession())) {
             kontonummer = connection.kontoNr;
+            bank = connection.bank;
             break;
         }
     }
-    if (kontonummer != null) {
-        ResultSet resultSet = DBUtil.executeSqlWithResultSet("SELECT Kontostand FROM user WHERE Kontonummer=" + kontonummer);
-        int balanceInCent = 0;
+    if (kontonummer != null && bank != null) {
+        ResultSet resultSet = DBUtil.executeSqlWithResultSet("SELECT Kontostand FROM user WHERE Kontonummer=" + kontonummer, bank);
+        int balanceInCent;
         int balanceEuros = 0;
         int balanceCents = 0;
         if (resultSet.next()) {

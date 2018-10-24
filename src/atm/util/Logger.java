@@ -1,6 +1,5 @@
 package atm.util;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -12,6 +11,6 @@ public class Logger {
         final Date timestamp = new Date(System.currentTimeMillis());
         final String logmsg = bank + " - " + keyword + " - " + amount + " - " + targetAccount + " - " + targetBank;
         final String sql = "INSERT INTO logs (user, log, time) VALUES (" + kontonummer + ", '" + logmsg + "', '" + dateFormat.format(timestamp) + "')";
-        DBUtil.executeSql(sql);
+        DBUtil.executeSql(sql, targetBank);
     }
 }

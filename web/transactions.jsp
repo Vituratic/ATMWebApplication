@@ -14,14 +14,16 @@
     <input type="submit" id="backToATM" name="backToATM" value="Back to my ATM">
 </form>
 <%
+    String bank = null;
     String kontonummer = null;
     for (Servlet.Connection connection : Servlet.authenticatedList) {
         if (connection.session.equals(request.getSession())) {
             kontonummer = connection.kontoNr;
+            bank = connection.bank;
             break;
         }
     }
-    if (kontonummer != null) {
+    if (kontonummer != null && bank != null) {
         out.println("Recent transactions of: " + kontonummer);
     } else {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
@@ -32,7 +34,7 @@
 <%
     out.println("-----------------------------------------------------------------------------------<br/>");
     final String sql = "SELECT * FROM logs WHERE user=" + kontonummer;
-    final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql);
+    final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, bank);
     while (resultSet.next()) {
         final String log = "[" + resultSet.getString("time") + "] : " + resultSet.getString("log") + "<br/>";
         out.println(log);

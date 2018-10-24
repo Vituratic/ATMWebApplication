@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,6 +20,7 @@ import java.util.ArrayList;
 public class Servlet extends HttpServlet {
     public static ArrayList<Connection> connections = new ArrayList<>();
     public static ArrayList<Connection> authenticatedList = new ArrayList<>();
+
     public static boolean isAuthenticated(HttpSession session){
         for (Connection connection:authenticatedList) {
             if (connection.session.equals(session)){
@@ -30,14 +29,8 @@ public class Servlet extends HttpServlet {
         }
         return false;
     }
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        if (request.getParameter("send") != null) {
-            if (DBUtil.executeSql("INSERT INTO user VALUES (1337, 'Hans', 'Wurst', 'Pa55w0rt', 2000)")) {
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/entrySucc.jsp");
-                dispatcher.forward(request, response);
-            }
-        }
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getParameter("withdraw") != null) {
             handleWithdrawal(request, response);
         }
@@ -66,38 +59,37 @@ public class Servlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/oBLogin.jsp");
             dispatcher.forward(request, response);
         }
-
-        //loginATM
         if (request.getParameter("loginATM") != null){
-            String uname = request.getParameter("uname");
-            String psw = request.getParameter("psw");
+            final String uname = request.getParameter("uname");
+            final String psw = request.getParameter("psw");
+            final String bank = request.getParameter("bank");
 
-            if (authenticate(uname, psw)){
-                authenticatedList.add(new Connection(uname, request.getSession()));
+            if (authenticate(uname, psw, bank)){
+                authenticatedList.add(new Connection(uname, request.getSession(), bank));
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
                 dispatcher.forward(request, response);
             }
         }
-        //loginOB
         if (request.getParameter("loginOB") != null){
-            String uname = request.getParameter("uname");
-            String psw = request.getParameter("psw");
+            final String uname = request.getParameter("uname");
+            final String psw = request.getParameter("psw");
+            final String bank = request.getParameter("bank");
 
-            if (authenticate(uname, psw)){
-                authenticatedList.add(new Connection(uname, request.getSession()));
+            if (authenticate(uname, psw, bank)){
+                authenticatedList.add(new Connection(uname, request.getSession(),bank));
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/onlineBanking.jsp");
                 dispatcher.forward(request, response);
             }
         }
-
         if (request.getParameter("wireTransferPort") != null){
             RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/wireTransfer.jsp");
             dispatcher.forward(request, response);
         }
-
         if (request.getParameter("wireTransfer") != null){
             requestMethods.wireTransfer(request,response);
         }
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+        dispatcher.forward(request, response);
     }
 
     private void handleWithdrawal(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
@@ -118,22 +110,24 @@ public class Servlet extends HttpServlet {
             dispatcher.forward(request, response);
             return;
         }
+        String bank = "";
         String kontonummer = "";
         for (Connection connection : connections) {
             if (connection.session.equals(request.getSession())) {
                 kontonummer = connection.kontoNr;
+                bank = connection.bank;
                 break;
             }
         }
         String sql = "SELECT Kontostand FROM user WHERE Kontonummer=" + kontonummer;
-        final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql);
+        final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, bank);
         try {
             if (resultSet.next()) {
                 final int availableMoney = resultSet.getInt("Kontostand");
                 if (availableMoney > amountToWithdraw) {
                     final int newBalance = availableMoney - amountToWithdraw;
                     sql = "UPDATE user SET Kontostand=" + newBalance + " WHERE Kontonummer=" + kontonummer;
-                    if (!DBUtil.executeSql(sql)) {
+                    if (!DBUtil.executeSql(sql, bank)) {
                         RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                         dispatcher.forward(request, response);
                     }
@@ -171,20 +165,22 @@ public class Servlet extends HttpServlet {
             dispatcher.forward(request, response);
             return;
         }
+        String bank = "";
         String kontonummer = "";
         for (Connection connection : connections) {
             if (connection.session.equals(request.getSession())) {
                 kontonummer = connection.kontoNr;
+                bank = connection.bank;
             }
         }
         String sql = "SELECT Kontostand FROM user WHERE Kontonummer=" + kontonummer;
-        final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql);
+        final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, bank);
         try {
             if (resultSet.next()) {
                 final int availableMoney = resultSet.getInt("Kontostand");
                 final int newBalance = availableMoney + amountToDeposit;
                 sql = "UPDATE user SET Kontostand=" + newBalance + " WHERE Kontonummer=" + kontonummer;
-                if (!DBUtil.executeSql(sql)) {
+                if (!DBUtil.executeSql(sql, bank)) {
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                     dispatcher.forward(request, response);
                 }
@@ -201,9 +197,9 @@ public class Servlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    protected boolean authenticate(String uname, String psw){
-        String sql = "SELECT Passwort FROM user WHERE Kontonummer=" + uname;
-        final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql);
+    protected boolean authenticate(final String uname, final String psw, final String targetBank){
+        final String sql = "SELECT Passwort FROM user WHERE Kontonummer=" + uname;
+        final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, targetBank);
         try {
             if (resultSet.next()) {
                 if (psw.equals(resultSet.getString("Passwort"))) {
@@ -232,15 +228,17 @@ public class Servlet extends HttpServlet {
     public static class Connection {
         public String kontoNr;
         public HttpSession session;
+        public String bank;
 
-        protected Connection(String kontoNr, HttpSession session){
+        protected Connection(final String kontoNr, final HttpSession session, final String bank){
             this.kontoNr = kontoNr;
             this.session = session;
+            this.bank = bank;
             connections.add(this);
         }
 
         //Connection aus KontoNr schließen
-        public static HttpSession getConnectionSession(String kontoNr){
+        public static HttpSession getConnectionSession(final String kontoNr){
             for (int i = 0; i < connections.size(); i++){
                 if (connections.get(i).kontoNr.equals(kontoNr)){
                     return connections.get(i).session;
@@ -249,10 +247,19 @@ public class Servlet extends HttpServlet {
             return null;
         }
 
-        public static String getConnectionAccId(HttpSession session){
+        public static String getConnectionAccId(final HttpSession session){
             for (int i = 0; i < connections.size(); i++){
                 if (connections.get(i).session.equals(session)){
                     return connections.get(i).kontoNr;
+                }
+            }
+            return null;
+        }
+
+        public static String getConnectionBank(final HttpSession session) {
+            for (Connection connection : connections) {
+                if (connection.session.equals(session)) {
+                    return connection.bank;
                 }
             }
             return null;

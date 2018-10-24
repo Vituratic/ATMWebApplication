@@ -9,22 +9,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 
 import static atm.servlet.Servlet.isAuthenticated;
 
 public class requestMethods {
+
     public static void wireTransfer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher;
         System.out.print(request.getParameter("amount"));
-        String amount = request.getParameter("amount");
-        String accNumber = request.getParameter("accNumber");
+        final String amount = request.getParameter("amount");
+        final String accNumber = request.getParameter("accNumber");
+        final String targetBank = request.getParameter("bank");
 
-        String inputToDeposit = null;
+        String inputToDeposit;
         if (!amount.contains(".")) {
             inputToDeposit = amount + "00";
         } else {
-            String[] inputToDepositSplit = amount.replace('.', 'a').split("a");
+            final String[] inputToDepositSplit = amount.replace('.', 'a').split("a");
             inputToDeposit = inputToDepositSplit[0] + inputToDepositSplit[1];
         }
         final int finalAmount = Integer.parseInt(inputToDeposit);
@@ -33,7 +34,6 @@ public class requestMethods {
             return;
         }
 
-        //nach überweisung kommt nicht eingeloggt fehlermeldung obwol eingeloggt!
         if (isAuthenticated(request.getSession())){
 
             dispatcher = request.getRequestDispatcher("/onlineBanking/onlineBanking.jsp");
@@ -41,13 +41,16 @@ public class requestMethods {
             dispatcher = request.getRequestDispatcher("/onlineBanking/notLoggedIn.jsp");
             dispatcher.forward(request, response);
         }
-        String sql1 = "UPDATE user  SET Kontostand = Kontostand + " + finalAmount + " WHERE Kontonummer=" + accNumber;
-        String sql2 = "UPDATE user  SET Kontostand = Kontostand - " + finalAmount + " WHERE Kontonummer=" + Servlet.Connection.getConnectionAccId(request.getSession());
-
-        DBUtil.executeSql(sql1);
-        DBUtil.executeSql(sql2);
-        Logger.log(accNumber, "banka", "WireTransfer", finalAmount, Servlet.Connection.getConnectionAccId(request.getSession()), "banka");
-        Logger.log(Servlet.Connection.getConnectionAccId(request.getSession()), "banka", "WireTransfer", -finalAmount, accNumber, "banka");
+        // DB action for person receiving the transfer
+        String sql = "UPDATE user  SET Kontostand = Kontostand + " + finalAmount + " WHERE Kontonummer=" + accNumber;
+        // DB action for person executing the transfer
+        DBUtil.executeSql(sql, targetBank);
+        sql = "UPDATE user  SET Kontostand = Kontostand - " + finalAmount + " WHERE Kontonummer=" + Servlet.Connection.getConnectionAccId(request.getSession());
+        DBUtil.executeSql(sql, Servlet.Connection.getConnectionBank(request.getSession()));
+        // log for person receiving the transfer
+        Logger.log(accNumber, targetBank, "WireTransfer", finalAmount, Servlet.Connection.getConnectionAccId(request.getSession()), Servlet.Connection.getConnectionBank(request.getSession()));
+        // log for person executing the transfer
+        Logger.log(Servlet.Connection.getConnectionAccId(request.getSession()), Servlet.Connection.getConnectionBank(request.getSession()), "WireTransfer", -finalAmount, accNumber, targetBank);
 
         dispatcher.forward(request, response);
     }
