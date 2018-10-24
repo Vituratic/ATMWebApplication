@@ -2,7 +2,6 @@ package atm.servlet;
 
 import atm.util.DBUtil;
 import atm.util.Logger;
-import sun.rmi.runtime.Log;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
