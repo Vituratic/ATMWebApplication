@@ -52,7 +52,7 @@
         out.println("How much would you like to deposit?");
     %>
     <br>
-    <input type="number" min="0" step="0.01" data-number-to-be-fixed="2" data-number-stepfactor="100" name="amountToDeposit" value=""><br>
+    <input type="number" min="0" step="0.01" data-number-to-be-fixed="2" data-number-stepfactor="100" name="amountToDeposit" maxlength="8" value=""><br>
     <input type="submit" id="deposit" name="deposit" value="Deposit">
 </form>
 <form method="post" action="${pageContext.request.contextPath}/Servlet">

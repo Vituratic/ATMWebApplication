@@ -27,7 +27,7 @@
         </select><br>
 
         <label for="Amount"><b>Amount</b></label>
-        <input type="number" min="0" step="0.01" data-number-to-be-fixed="2" data-number-stepfactor="100" placeholder="Amount in EUR" id="Amount" name="amount" required>€<br>
+        <input type="number" min="0" step="0.01" data-number-to-be-fixed="2" data-number-stepfactor="100" placeholder="Amount in EUR" id="Amount" name="amount" maxlength="8" required>€<br>
 
         <button type="submit" id="wireTransfer" name="wireTransfer" >confirm</button>
     </div>
