@@ -4,10 +4,12 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="atmStyle.css">
     <title>Recent Transactions</title>
 </head>
 <body>
 <h1>
+
     Bank of Trust
 </h1>
 <form method="post" action="${pageContext.request.contextPath}/Servlet">

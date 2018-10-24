@@ -2,9 +2,13 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="onlineStyle.css">
     <title>Wire Transfer</title>
 </head>
 <body>
+<h1>
+    Bank of Trust
+</h1>
 <%
     if(!Servlet.isAuthenticated(request.getSession())) {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");

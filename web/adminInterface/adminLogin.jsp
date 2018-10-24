@@ -1,9 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="adminStyle.css">
     <title>Admin Login</title>
 </head>
 <body>
+<h1>
+    Bank of Trust
+</h1>
 <form method="post" action="${pageContext.request.contextPath}/Servlet">
     <div class="container">
         <label for="uname"><b>Account Number</b></label>
