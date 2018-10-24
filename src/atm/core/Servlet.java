@@ -16,7 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 
-@WebServlet("/Servlet")
+@WebServlet("/BoT")
 public class Servlet extends HttpServlet {
     public static ArrayList<Connection> connections = new ArrayList<>();
     public static ArrayList<Connection> authenticatedList = new ArrayList<>();
@@ -140,6 +140,18 @@ public class Servlet extends HttpServlet {
         }
         if (request.getParameter("makeWireTransaction") != null){
             RequestDispatcher dispatcher = request.getRequestDispatcher("/adminInterface/makeWireTransaction.jsp");
+            dispatcher.forward(request, response);
+        }
+        if (request.getParameter("startOnlineBanking") != null) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/oBLogin.jsp");
+            dispatcher.forward(request, response);
+        }
+        if (request.getParameter("startAtm") != null) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
+            dispatcher.forward(request, response);
+        }
+        if (request.getParameter("startAdmin") != null) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/adminLogin.jsp");
             dispatcher.forward(request, response);
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
@@ -282,12 +294,9 @@ public class Servlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (!isAuthenticated(request.getSession())) {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
-            dispatcher.forward(request, response);
-        }
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/startingDialogue.jsp");
         dispatcher.forward(request, response);
+
     }
 
     //Hilfsklasse
