@@ -143,13 +143,15 @@ public class Servlet extends HttpServlet {
         if (!isAuthenticated(request.getSession())) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
+            return;
         }
         String inputToWithdraw;
         if (!request.getParameter("amountToWithdraw").contains(".")) {
             inputToWithdraw = request.getParameter("amountToWithdraw") + "00";
-            if (inputToWithdraw.length() > 6) {
+            if (inputToWithdraw.length() > 8) {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                 dispatcher.forward(request, response);
+                return;
             }
         } else {
             String[] inputToWithdrawSplit = request.getParameter("amountToWithdraw").replace('.', 'a').split("a");
@@ -157,6 +159,7 @@ public class Servlet extends HttpServlet {
             if (inputToWithdraw.length() > 8) {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                 dispatcher.forward(request, response);
+                return;
             }
         }
         final long amountToWithdraw = Long.parseLong(inputToWithdraw);
@@ -179,25 +182,28 @@ public class Servlet extends HttpServlet {
         try {
             if (resultSet.next()) {
                 final long availableMoney = resultSet.getLong("Kontostand");
-                if (availableMoney > amountToWithdraw) {
+                if (availableMoney - amountToWithdraw >= -200000) {
                     final long newBalance = availableMoney - amountToWithdraw;
                     sql = "UPDATE user SET Kontostand=" + newBalance + " WHERE Kontonummer=" + accNumber;
                     if (!DBUtil.executeSql(sql, bank)) {
                         RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                         dispatcher.forward(request, response);
+                        return;
                     }
                 } else {
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                     dispatcher.forward(request, response);
+                    return;
                 }
             } else {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                 dispatcher.forward(request, response);
+                return;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        Logger.log(accNumber, bank, "Withdraw", amountToWithdraw, accNumber, bank);
+        Logger.log(accNumber, "Withdrawal: " + amountToWithdraw, bank);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
         dispatcher.forward(request, response);
     }
@@ -206,13 +212,15 @@ public class Servlet extends HttpServlet {
         if (!isAuthenticated(request.getSession())) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
+            return;
         }
         String inputToDeposit;
         if (!request.getParameter("amountToDeposit").contains(".")) {
             inputToDeposit = request.getParameter("amountToDeposit") + "00";
-            if (inputToDeposit.length() > 6) {
+            if (inputToDeposit.length() > 8) {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                 dispatcher.forward(request, response);
+                return;
             }
         } else {
             String[] inputToDepositSplit = request.getParameter("amountToDeposit").replace('.', 'a').split("a");
@@ -220,6 +228,7 @@ public class Servlet extends HttpServlet {
             if (inputToDeposit.length() > 8) {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                 dispatcher.forward(request, response);
+                return;
             }
         }
         final long amountToDeposit = Long.parseLong(inputToDeposit);
@@ -246,16 +255,18 @@ public class Servlet extends HttpServlet {
                 if (!DBUtil.executeSql(sql, bank)) {
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                     dispatcher.forward(request, response);
+                    return;
                 }
             } else {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                 dispatcher.forward(request, response);
+                return;
             }
         } catch (SQLException e) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
-        Logger.log(accNumber, bank, "Deposit", amountToDeposit, accNumber, bank);
+        Logger.log(accNumber, "Deposit: " + amountToDeposit, bank);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
         dispatcher.forward(request, response);
     }
