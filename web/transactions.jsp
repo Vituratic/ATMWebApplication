@@ -15,6 +15,7 @@
 <form method="post" action="${pageContext.request.contextPath}/Servlet">
     <input type="submit" id="backToATM" name="backToATM" value="Back to my ATM">
 </form>
+<p>
 <%
     String bank = null;
     String accNumber = null;
@@ -44,5 +45,6 @@
         dispatcher.forward(request, response);
     }
 %>
+</p>
 </body>
 </html>

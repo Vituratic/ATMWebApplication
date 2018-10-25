@@ -68,9 +68,14 @@ public class Servlet extends HttpServlet {
             final String bank = request.getParameter("bank");
 
             if (authenticate(uname, psw, bank)){
-                authenticatedList.add(new Connection(uname, request.getSession(), bank));
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
-                dispatcher.forward(request, response);
+                if (isAuthenticated(request.getSession())) {
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
+                    dispatcher.forward(request, response);
+                } else {
+                    authenticatedList.add(new Connection(uname, request.getSession(), bank));
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
+                    dispatcher.forward(request, response);
+                }
             }
         } else if (request.getParameter("loginOB") != null){
             final String uname = request.getParameter("uname");
@@ -78,9 +83,14 @@ public class Servlet extends HttpServlet {
             final String bank = request.getParameter("bank");
 
             if (authenticate(uname, psw, bank)){
-                authenticatedList.add(new Connection(uname, request.getSession(),bank));
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/onlineBanking.jsp");
-                dispatcher.forward(request, response);
+                if (isAuthenticated(request.getSession())) {
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
+                    dispatcher.forward(request, response);
+                } else {
+                    authenticatedList.add(new Connection(uname, request.getSession(), bank));
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/onlineBanking.jsp");
+                    dispatcher.forward(request, response);
+                }
             }
         } else if (request.getParameter("wireTransferPort") != null){
             RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/wireTransfer.jsp");
@@ -103,9 +113,14 @@ public class Servlet extends HttpServlet {
             final String bank = request.getParameter("bank");
 
             if (authenticate(uname, psw, bank) && uname.equals("999999999")){
-                adminList.add(new Connection(uname, request.getSession(),bank));
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/adminInterface/adminPage.jsp");
-                dispatcher.forward(request, response);
+                if (isAdmin(request.getSession())) {
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/adminInferface/adminPage.jsp");
+                    dispatcher.forward(request, response);
+                } else {
+                    adminList.add(new Connection(uname, request.getSession(), bank));
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/adminInterface/adminPage.jsp");
+                    dispatcher.forward(request, response);
+                }
             } else {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                 dispatcher.forward(request, response);
@@ -133,7 +148,37 @@ public class Servlet extends HttpServlet {
         } else if (request.getParameter("startAdmin") != null) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/adminInterface/adminLogin.jsp");
             dispatcher.forward(request, response);
-        } else {
+        } else if (request.getParameter("logoutATM") != null){
+            for (Connection connection:authenticatedList) {
+                if (connection.session.equals(request.getSession())){
+                    authenticatedList.remove(connection);
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
+                    dispatcher.forward(request, response);
+                }
+            }
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
+            dispatcher.forward(request, response);
+        } else if (request.getParameter("logoutOb") != null){
+            for (Connection connection:authenticatedList) {
+                if (connection.session.equals(request.getSession())){
+                    authenticatedList.remove(connection);
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/oBLogin.jsp");
+                    dispatcher.forward(request, response);
+                }
+            }
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/oBLogin.jsp");
+            dispatcher.forward(request, response);
+        } else if (request.getParameter("adminLogout") != null){
+            for (Connection connection:adminList) {
+                if (connection.session.equals(request.getSession())){
+                    adminList.remove(connection);
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/adminInterface/adminLogin.jsp");
+                    dispatcher.forward(request, response);
+                }
+            }
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/adminInterface/adminLogin.jsp");
+            dispatcher.forward(request, response);
+        }else {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }

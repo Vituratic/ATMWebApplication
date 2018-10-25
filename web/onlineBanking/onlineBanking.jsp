@@ -21,7 +21,7 @@
             break;
         }
     }
-    if (accNumber != null && bank != null) {
+    if (accNumber != null && bank != null && Servlet.isAuthenticated(request.getSession())) {
         try {
             ResultSet resultSet = DBUtil.executeSqlWithResultSet("SELECT Kontostand FROM user WHERE Kontonummer=" + accNumber, bank);
             long balanceInCent;
@@ -49,6 +49,7 @@
 <form method="post" action="${pageContext.request.contextPath}/Servlet">
     <button type="submit" id="wireTransferPort" name="wireTransferPort" >Wire Transfer</button><br>
     <button type="submit" id="accLogs" name="accLogs" >Account Logs</button><br>
+    <button type="submit" id="logoutOb" name="logoutOb" value="Logout">Logout</button><br>
 </form>
 </body>
 </html>
