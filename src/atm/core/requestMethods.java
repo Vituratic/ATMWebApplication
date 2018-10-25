@@ -19,6 +19,8 @@ public class requestMethods {
         final String amount = request.getParameter("amount");
         final String accNumber = request.getParameter("accNumber");
         final String targetBank = request.getParameter("bank");
+        final String executingAccNumber = Servlet.Connection.getConnectionAccId(request.getSession());
+        final String executingBank = Servlet.Connection.getConnectionBank(request.getSession());
         String inputToDeposit;
         if (!amount.contains(".")) {
             inputToDeposit = amount + "00";
@@ -40,16 +42,15 @@ public class requestMethods {
         String sql = "UPDATE user  SET Kontostand = Kontostand + " + finalAmount + " WHERE Kontonummer=" + accNumber;
         // DB action for person executing the transfer
         DBUtil.executeSql(sql, targetBank);
-        sql = "UPDATE user  SET Kontostand = Kontostand - " + finalAmount + " WHERE Kontonummer=" + Servlet.Connection.getConnectionAccId(request.getSession());
+        sql = "UPDATE user  SET Kontostand = Kontostand - " + finalAmount + " WHERE Kontonummer=" + executingAccNumber;
         DBUtil.executeSql(sql, Servlet.Connection.getConnectionBank(request.getSession()));
         // log for person receiving the transfer
-        Logger.log(accNumber, targetBank, "WireTransfer", finalAmount, Servlet.Connection.getConnectionAccId(request.getSession()), Servlet.Connection.getConnectionBank(request.getSession()));
+        Logger.log(accNumber, "WireTransfer from " + executingAccNumber + " at " + executingBank + ": " + amount, targetBank);
         // log for person executing the transfer
-        Logger.log(Servlet.Connection.getConnectionAccId(request.getSession()), Servlet.Connection.getConnectionBank(request.getSession()), "WireTransfer", -finalAmount, accNumber, targetBank);
+        Logger.log(executingAccNumber, "WireTransfer to " + accNumber + " at " + targetBank + ": " + amount, executingBank);
         dispatcher.forward(request, response);
     }
-    public static void adminWireTransfer(HttpServletRequest request, HttpServletResponse response){
-        RequestDispatcher dispatcher;
+    public static void adminWireTransfer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         final String amount = request.getParameter("amount");
         final String originNumber = request.getParameter("accNumberFrom");
         final String targetNumber = request.getParameter("accNumberTo");
@@ -74,8 +75,10 @@ public class requestMethods {
         sql = "UPDATE user  SET Kontostand = Kontostand - " + finalAmount + " WHERE Kontonummer=" + originNumber;
         DBUtil.executeSql(sql, originBank);
         // log for person receiving the transfer
-        Logger.log(targetNumber, targetBank, "WireTransfer", finalAmount, originNumber, originBank);
+        Logger.log(targetNumber, "ADM | WireTransfer from " + originNumber + " at " + originBank + ": " + amount, targetBank);
         // log for person executing the transfer
-        Logger.log(originNumber, originBank , "WireTransfer", -finalAmount, targetNumber, targetBank);
+        Logger.log(originNumber, "ADM | WireTransfer to " + targetNumber + " at " + targetBank + ": " + amount, originBank);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/adminInterface/adminPage.jsp");
+        dispatcher.forward(request, response);
     }
 }
