@@ -44,28 +44,33 @@
             break;
         }
     }
-    if (accNumber == null || accNumber.equals("")){
-        if (authenticated) {
-            out.println("Recent transactions: ");
-            out.println("<p></p>-----------------------------------------------------------------------------------<br/>");
-            final String sql = "SELECT * FROM logs";
-            final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, bank);
-            while (resultSet.next()) {
-                final String log = "[" + resultSet.getString("time") + "] : " + resultSet.getString("user") + " | " + resultSet.getString("log") + "<br/>";
-                out.println(log);
+    try {
+        if (accNumber == null || accNumber.equals("")) {
+            if (authenticated) {
+                out.println("Recent transactions: ");
+                out.println("<p></p>-----------------------------------------------------------------------------------<br/>");
+                final String sql = "SELECT * FROM logs";
+                final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, bank);
+                while (resultSet.next()) {
+                    final String log = "[" + resultSet.getString("time") + "] : " + resultSet.getString("user") + " | " + resultSet.getString("log") + "<br/>";
+                    out.println(log);
+                }
+            }
+        } else {
+            if (authenticated) {
+                out.println("Recent transactions of: " + accNumber);
+                out.println("<p></p>-----------------------------------------------------------------------------------<br/>");
+                final String sql = "SELECT * FROM logs WHERE user=" + accNumber;
+                final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, bank);
+                while (resultSet.next()) {
+                    final String log = "[" + resultSet.getString("time") + "] : " + resultSet.getString("user") + " | " + resultSet.getString("log") + "<br/>";
+                    out.println(log);
+                }
             }
         }
-    }else {
-        if (authenticated) {
-            out.println("Recent transactions of: " + accNumber);
-            out.println("<p></p>-----------------------------------------------------------------------------------<br/>");
-            final String sql = "SELECT * FROM logs WHERE user=" + accNumber;
-            final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, bank);
-            while (resultSet.next()) {
-                final String log = "[" + resultSet.getString("time") + "] : " + resultSet.getString("user") + " | " + resultSet.getString("log") + "<br/>";
-                out.println(log);
-            }
-        }
+    } catch (Exception e) {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+        dispatcher.forward(request, response);
     }
 %>
 </body>
