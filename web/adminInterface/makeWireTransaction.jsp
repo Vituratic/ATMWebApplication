@@ -12,7 +12,7 @@
 <form method="post" action="${pageContext.request.contextPath}/Servlet">
 <div class="container">
     <label for="Account Number from"><b>Origin Number</b></label>
-    <input type="text" placeholder="Account Number" id="Account Number from" name="accNumberFrom" required><br>
+    <input type="number" placeholder="Account Number" id="Account Number from" name="accNumberFrom" required><br>
     <label>Origin Bank</label>
     <select name="bankFrom" required>
         <option value="banka">Banka</option>
@@ -20,7 +20,7 @@
         <option value="bankc">Bankc</option>
     </select><br><br>
     <label for="Account Number to"><b>Target Number</b></label>
-    <input type="text" placeholder="Account Number" id="Account Number to" name="accNumberTo" required><br>
+    <input type="number" placeholder="Account Number" id="Account Number to" name="accNumberTo" required><br>
     <label>Target Bank</label>
     <select name="bankTo" required>
         <option value="banka">Banka</option>

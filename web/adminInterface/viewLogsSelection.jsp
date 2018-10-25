@@ -16,7 +16,7 @@
     <button type="submit" id="viewLogs" name="viewLogs" >View Logs</button><br><br>
     <div class="container">
         <label for="uname"><b>Account Number</b></label>
-        <input type="text" placeholder="Account Number" id="uname" name="uname"><br>
+        <input type="number" placeholder="Account Number" id="uname" name="uname"><br>
         <label>Bank</label>
         <select name="bank">
             <option value="banka">Banka</option>
@@ -36,7 +36,11 @@
     } else {
         bank = Servlet.Connection.getConnectionBank(request.getSession());
     }
-    String accNumber = request.getParameter("uname");
+    final String accNumber = request.getParameter("uname");
+    if (!accNumber.matches("\\d+")) {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+        dispatcher.forward(request, response);
+    }
     boolean authenticated = false;
     for (Servlet.Connection connection : Servlet.adminList) {
         if (connection.session.equals(request.getSession())) {

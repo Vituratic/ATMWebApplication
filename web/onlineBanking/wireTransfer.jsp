@@ -18,7 +18,7 @@
 <form method="post" action="${pageContext.request.contextPath}/Servlet">
     <div class="container">
         <label for="Account Number"><b>Account Number</b></label>
-        <input type="text" placeholder="Account Number" id="Account Number" name="accNumber" required><br>
+        <input type="number" placeholder="Account Number" id="Account Number" name="accNumber" required><br>
         <label>Target Bank</label>
         <select name="bank" required>
             <option value="banka">Banka</option>

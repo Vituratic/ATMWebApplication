@@ -39,7 +39,7 @@ public class Servlet extends HttpServlet {
         return false;
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         if (request.getParameter("withdraw") != null) {
             handleWithdrawal(request, response);
         } else if (request.getParameter("deposit") != null) {
@@ -66,24 +66,28 @@ public class Servlet extends HttpServlet {
             final String uname = request.getParameter("uname");
             final String psw = request.getParameter("psw");
             final String bank = request.getParameter("bank");
-
             if (authenticate(uname, psw, bank)){
                 if (!isAuthenticated(request.getSession())) {
                     authenticatedList.add(new Connection(uname, request.getSession(), bank));
                 }
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
                 dispatcher.forward(request, response);
+            } else {
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+                dispatcher.forward(request, response);
             }
         } else if (request.getParameter("loginOB") != null){
             final String uname = request.getParameter("uname");
             final String psw = request.getParameter("psw");
             final String bank = request.getParameter("bank");
-
             if (authenticate(uname, psw, bank)){
                 if (!isAuthenticated(request.getSession())) {
                     authenticatedList.add(new Connection(uname, request.getSession(), bank));
                 }
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/onlineBanking.jsp");
+                dispatcher.forward(request, response);
+            } else {
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                 dispatcher.forward(request, response);
             }
         } else if (request.getParameter("wireTransferPort") != null){
@@ -100,12 +104,10 @@ public class Servlet extends HttpServlet {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                 dispatcher.forward(request, response);
             }
-
         } else if (request.getParameter("loginAdmin") != null){
             final String uname = request.getParameter("uname");
             final String psw = request.getParameter("psw");
             final String bank = request.getParameter("bank");
-
             if (authenticate(uname, psw, bank) && uname.equals("999999999")){
                 if (!isAdmin(request.getSession())) {
                     adminList.add(new Connection(uname, request.getSession(), bank));
@@ -198,7 +200,13 @@ public class Servlet extends HttpServlet {
                 return;
             }
         }
-        final long amountToWithdraw = Long.parseLong(inputToWithdraw);
+        long amountToWithdraw = -1;
+        try {
+            amountToWithdraw = Long.parseLong(inputToWithdraw);
+        } catch (Exception e) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
+        }
         if (amountToWithdraw < 0) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
@@ -236,8 +244,9 @@ public class Servlet extends HttpServlet {
                 dispatcher.forward(request, response);
                 return;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
         }
         Logger.log(accNumber, "Withdrawal: " + amountToWithdraw, bank);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
@@ -267,7 +276,13 @@ public class Servlet extends HttpServlet {
                 return;
             }
         }
-        final long amountToDeposit = Long.parseLong(inputToDeposit);
+        long amountToDeposit = -1 ;
+        try {
+            amountToDeposit = Long.parseLong(inputToDeposit);
+        } catch (Exception e) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
+        }
         if (amountToDeposit < 0) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
@@ -298,7 +313,7 @@ public class Servlet extends HttpServlet {
                 dispatcher.forward(request, response);
                 return;
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
@@ -314,7 +329,7 @@ public class Servlet extends HttpServlet {
             if (resultSet.next()) {
                 return psw.equals(resultSet.getString("Passwort"));
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }

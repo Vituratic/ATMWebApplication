@@ -10,18 +10,22 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import static atm.core.Servlet.isAuthenticated;
 
 public class requestMethods {
 
-    public static void wireTransfer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public static void wireTransfer(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher;
         final String amount = request.getParameter("amount");
         final String accNumber = request.getParameter("accNumber");
         final String targetBank = request.getParameter("bank");
         final String executingAccNumber = Servlet.Connection.getConnectionAccId(request.getSession());
+        if (!accNumber.matches("\\d+") || !executingAccNumber.matches("\\d+")) {
+            dispatcher = request.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
         final String executingBank = Servlet.Connection.getConnectionBank(request.getSession());
         String inputToDeposit;
         if (!amount.contains(".")) {
@@ -30,7 +34,13 @@ public class requestMethods {
             final String[] inputToDepositSplit = amount.replace('.', 'a').split("a");
             inputToDeposit = inputToDepositSplit[0] + inputToDepositSplit[1];
         }
-        final long finalAmount = Long.parseLong(inputToDeposit);
+        long finalAmount = -1;
+        try {
+            finalAmount = Long.parseLong(inputToDeposit);
+        } catch (Exception e) {
+            dispatcher = request.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
+        }
         if (finalAmount < 0){
             return;
         }
@@ -39,10 +49,11 @@ public class requestMethods {
         }else{
             dispatcher = request.getRequestDispatcher("/onlineBanking/notLoggedIn.jsp");
             dispatcher.forward(request, response);
+            return;
         }
-        ResultSet sqlCheck = DBUtil.executeSqlWithResultSet("SELECT Passwort FROM user WHERE Kontonummer=" + accNumber ,targetBank);
+        final ResultSet sqlCheck = DBUtil.executeSqlWithResultSet("SELECT Passwort FROM user WHERE Kontonummer=" + accNumber ,targetBank);
         try{
-            if(sqlCheck.next() == false){
+            if(!sqlCheck.next()){
                 dispatcher = request.getRequestDispatcher("/error.jsp");
                 dispatcher.forward(request, response);
                 return;
@@ -55,8 +66,8 @@ public class requestMethods {
         }
         // DB action for person receiving the transfer
         String sql = "UPDATE user  SET Kontostand = Kontostand + " + finalAmount + " WHERE Kontonummer=" + accNumber;
-        // DB action for person executing the transfer
         DBUtil.executeSql(sql, targetBank);
+        // DB action for person executing the transfer
         sql = "UPDATE user  SET Kontostand = Kontostand - " + finalAmount + " WHERE Kontonummer=" + executingAccNumber;
         DBUtil.executeSql(sql, Servlet.Connection.getConnectionBank(request.getSession()));
         // log for person receiving the transfer
@@ -65,10 +76,15 @@ public class requestMethods {
         Logger.log(executingAccNumber, "WireTransfer to " + accNumber + " at " + targetBank + ": " + amount, executingBank);
         dispatcher.forward(request, response);
     }
+
     public static void adminWireTransfer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         final String amount = request.getParameter("amount");
         final String originNumber = request.getParameter("accNumberFrom");
         final String targetNumber = request.getParameter("accNumberTo");
+        if (!originNumber.matches("\\d+") ||!targetNumber.matches("\\d+")) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
+        }
         final String originBank = request.getParameter("bankFrom");
         final String targetBank = request.getParameter("bankTo");
 
@@ -79,7 +95,13 @@ public class requestMethods {
             final String[] inputToDepositSplit = amount.replace('.', 'a').split("a");
             inputToDeposit = inputToDepositSplit[0] + inputToDepositSplit[1];
         }
-        final long finalAmount = Long.parseLong(inputToDeposit);
+        long finalAmount = -1;
+        try {
+            finalAmount = Long.parseLong(inputToDeposit);
+        } catch (Exception e) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
+        }
         if (finalAmount < 0){
             return;
         }
