@@ -68,14 +68,11 @@ public class Servlet extends HttpServlet {
             final String bank = request.getParameter("bank");
 
             if (authenticate(uname, psw, bank)){
-                if (isAuthenticated(request.getSession())) {
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
-                    dispatcher.forward(request, response);
-                } else {
+                if (!isAuthenticated(request.getSession())) {
                     authenticatedList.add(new Connection(uname, request.getSession(), bank));
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
-                    dispatcher.forward(request, response);
                 }
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
+                dispatcher.forward(request, response);
             }
         } else if (request.getParameter("loginOB") != null){
             final String uname = request.getParameter("uname");
@@ -83,14 +80,11 @@ public class Servlet extends HttpServlet {
             final String bank = request.getParameter("bank");
 
             if (authenticate(uname, psw, bank)){
-                if (isAuthenticated(request.getSession())) {
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
-                    dispatcher.forward(request, response);
-                } else {
+                if (!isAuthenticated(request.getSession())) {
                     authenticatedList.add(new Connection(uname, request.getSession(), bank));
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/onlineBanking.jsp");
-                    dispatcher.forward(request, response);
                 }
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/onlineBanking.jsp");
+                dispatcher.forward(request, response);
             }
         } else if (request.getParameter("wireTransferPort") != null){
             RequestDispatcher dispatcher = request.getRequestDispatcher("/onlineBanking/wireTransfer.jsp");
@@ -113,14 +107,11 @@ public class Servlet extends HttpServlet {
             final String bank = request.getParameter("bank");
 
             if (authenticate(uname, psw, bank) && uname.equals("999999999")){
-                if (isAdmin(request.getSession())) {
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("/adminInferface/adminPage.jsp");
-                    dispatcher.forward(request, response);
-                } else {
+                if (!isAdmin(request.getSession())) {
                     adminList.add(new Connection(uname, request.getSession(), bank));
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("/adminInterface/adminPage.jsp");
-                    dispatcher.forward(request, response);
                 }
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/adminInterface/adminPage.jsp");
+                dispatcher.forward(request, response);
             } else {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                 dispatcher.forward(request, response);

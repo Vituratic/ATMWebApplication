@@ -42,10 +42,16 @@ public class requestMethods {
         }
         ResultSet sqlCheck = DBUtil.executeSqlWithResultSet("SELECT Passwort FROM user WHERE Kontonummer=" + accNumber ,targetBank);
         try{
-            sqlCheck.next();
+            if(sqlCheck.next() == false){
+                dispatcher = request.getRequestDispatcher("/error.jsp");
+                dispatcher.forward(request, response);
+                return;
+            }
+
         }catch(Exception e){
             dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
+            return;
         }
         // DB action for person receiving the transfer
         String sql = "UPDATE user  SET Kontostand = Kontostand + " + finalAmount + " WHERE Kontonummer=" + accNumber;
