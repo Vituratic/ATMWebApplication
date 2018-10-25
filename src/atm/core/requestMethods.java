@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import static atm.core.Servlet.isAuthenticated;
 
@@ -36,6 +38,13 @@ public class requestMethods {
             dispatcher = request.getRequestDispatcher("/onlineBanking/onlineBanking.jsp");
         }else{
             dispatcher = request.getRequestDispatcher("/onlineBanking/notLoggedIn.jsp");
+            dispatcher.forward(request, response);
+        }
+        ResultSet sqlCheck = DBUtil.executeSqlWithResultSet("SELECT Passwort FROM user WHERE Kontonummer=" + accNumber ,targetBank);
+        try{
+            sqlCheck.next();
+        }catch(Exception e){
+            dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
         // DB action for person receiving the transfer
