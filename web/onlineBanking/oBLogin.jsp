@@ -14,7 +14,7 @@
         <input type="number" placeholder="Account Number" id="uname" name="uname" required><br>
 
         <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="Password" id="psw" name="psw" required><br>
+        <input type="password" placeholder="Password" id="psw" name="psw" autocomplete="OFF" required><br>
         <label>Bank</label>
         <select name="bank">
             <option value="banka">Banka</option>
