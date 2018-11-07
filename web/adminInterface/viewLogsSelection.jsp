@@ -37,9 +37,11 @@
         bank = Servlet.Connection.getConnectionBank(request.getSession());
     }
     final String accNumber = request.getParameter("uname");
-    if (!accNumber.matches("\\d+")) {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
-        dispatcher.forward(request, response);
+    if (accNumber != null) {
+        if (!accNumber.matches("\\d+")) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
+        }
     }
     boolean authenticated = false;
     for (Servlet.Connection connection : Servlet.adminList) {

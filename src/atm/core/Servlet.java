@@ -201,8 +201,14 @@ public class Servlet extends HttpServlet {
             }
         }
         long amountToWithdraw = -1;
+        int amountInt;
+        String amountEuro = "";
+        String amountCent = "";
         try {
             amountToWithdraw = Long.parseLong(inputToWithdraw);
+            amountInt = (int)(amountToWithdraw/100);
+            amountEuro = "" + amountInt;
+            amountCent = "" + (amountToWithdraw - amountInt*100);
         } catch (Exception e) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
@@ -248,7 +254,7 @@ public class Servlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
-        Logger.log(accNumber, "Withdrawal: " + amountToWithdraw, bank);
+        Logger.log(accNumber, "Withdrawal: " + amountEuro + "," + amountCent + "€", bank);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
         dispatcher.forward(request, response);
     }
@@ -277,8 +283,14 @@ public class Servlet extends HttpServlet {
             }
         }
         long amountToDeposit = -1 ;
+        int amountInt;
+        String amountEuro = "";
+        String amountCent = "";
         try {
             amountToDeposit = Long.parseLong(inputToDeposit);
+            amountInt = (int)(amountToDeposit/100);
+            amountEuro = "" + amountInt;
+            amountCent = "" + (amountToDeposit - amountInt*100);
         } catch (Exception e) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
