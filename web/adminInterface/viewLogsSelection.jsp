@@ -64,10 +64,10 @@
             }
         } else {
             if (authenticated) {
+                int accNumberInt = Integer.parseInt(accNumber);
                 out.println("Recent transactions of: " + accNumber);
                 out.println("<p></p>-----------------------------------------------------------------------------------<br/>");
-                final String sql = "SELECT * FROM logs WHERE user=" + accNumber;
-                final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, bank);
+                final ResultSet resultSet = DBUtil.getLogs(accNumberInt, bank);
                 while (resultSet.next()) {
                     final String log = "[" + resultSet.getString("time") + "] : " + resultSet.getString("user") + " | " + resultSet.getString("log") + "<br/>";
                     out.println(log);

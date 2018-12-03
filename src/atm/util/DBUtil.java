@@ -2,6 +2,7 @@ package atm.util;
 
 import com.mysql.jdbc.Driver;
 
+import javax.xml.transform.Result;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -40,6 +41,68 @@ public class DBUtil {
             return preparedStatement.executeQuery();
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    public static ResultSet getLogs(final int accNumber, final String targetBank) {
+        final String URL = URLHOLDER.replace("PLACEHOLDER", targetBank);
+        try {
+            final Driver driver = new Driver();
+            DriverManager.registerDriver(driver);
+            final Connection connection = DriverManager.getConnection(URL, USER, PASS);
+            final String sql = "SELECT * FROM logs WHERE user = ?";
+            final PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, accNumber);
+            return preparedStatement.executeQuery();
+        } catch(Exception e) {
+            return null;
+        }
+    }
+
+    public static ResultSet getKontostand(final int accNumber, final String targetBank) {
+        final String URL = URLHOLDER.replace("PLACEHOLDER", targetBank);
+        try {
+            final Driver driver = new Driver();
+            DriverManager.registerDriver(driver);
+            final Connection connection = DriverManager.getConnection(URL, USER, PASS);
+            final String sql = "SELECT Kontostand FROM user WHERE Kontonummer = ?";
+            final PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, accNumber);
+            return preparedStatement.executeQuery();
+        } catch(Exception e) {
+            return null;
+        }
+    }
+
+    public static ResultSet getPassword(final int accNumber, final String targetBank) {
+        final String URL = URLHOLDER.replace("PLACEHOLDER", targetBank);
+        try {
+            final Driver driver = new Driver();
+            DriverManager.registerDriver(driver);
+            final Connection connection = DriverManager.getConnection(URL, USER, PASS);
+            final String sql = "SELECT Passwort FROM user WHERE Kontonummer = ?";
+            final PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, accNumber);
+            return preparedStatement.executeQuery();
+        } catch(Exception e) {
+            return null;
+        }
+    }
+
+    public static boolean updateKontostand(final int amount, final int accNumber, final String targetBank) {
+        final String URL = URLHOLDER.replace("PLACEHOLDER", targetBank);
+        try {
+            final Driver driver = new Driver();
+            DriverManager.registerDriver(driver);
+            final Connection connection = DriverManager.getConnection(URL, USER, PASS);
+            final String sql = "UPDATE user SET Kontostand = Kontostand + ? WHERE Kontonummer = ?";
+            final PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, amount);
+            preparedStatement.setInt(2, accNumber);
+            preparedStatement.execute();
+            return true;
+        } catch(Exception e) {
+            return false;
         }
     }
 

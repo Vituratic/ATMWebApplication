@@ -34,9 +34,9 @@
 <p></p>
 <%
     out.println("-----------------------------------------------------------------------------------<br/>");
-    final String sql = "SELECT * FROM logs WHERE user=" + accNumber;
-    final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, bank);
     try {
+        int accNumberInt = Integer.parseInt(accNumber);
+        final ResultSet resultSet = DBUtil.getLogs(accNumberInt, bank);
         while (resultSet.next()) {
             final String log = "[" + resultSet.getString("time") + "] : " + resultSet.getString("log") + "<br/>";
             out.println(log);

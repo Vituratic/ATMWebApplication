@@ -226,15 +226,14 @@ public class Servlet extends HttpServlet {
                 break;
             }
         }
-        String sql = "SELECT Kontostand FROM user WHERE Kontonummer=" + accNumber;
-        final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, bank);
+        int accNumberInt = Integer.parseInt(accNumber);
+        final ResultSet resultSet = DBUtil.getKontostand(accNumberInt, bank);
         try {
             if (resultSet.next()) {
                 final long availableMoney = resultSet.getLong("Kontostand");
                 if (availableMoney - amountToWithdraw >= -200000) {
-                    final long newBalance = availableMoney - amountToWithdraw;
-                    sql = "UPDATE user SET Kontostand=" + newBalance + " WHERE Kontonummer=" + accNumber;
-                    if (!DBUtil.executeSql(sql, bank)) {
+                    int amountToWithdrawInt = java.lang.Math.toIntExact(amountToWithdraw);
+                    if (!DBUtil.updateKontostand(-amountToWithdrawInt, accNumberInt, bank)) {
                         RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                         dispatcher.forward(request, response);
                         return;
@@ -307,14 +306,12 @@ public class Servlet extends HttpServlet {
                 bank = connection.bank;
             }
         }
-        String sql = "SELECT Kontostand FROM user WHERE Kontonummer=" + accNumber;
-        final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, bank);
         try {
+            int accNumberInt = Integer.parseInt(accNumber);
+            final ResultSet resultSet = DBUtil.getKontostand(accNumberInt, bank);
             if (resultSet.next()) {
-                final long availableMoney = resultSet.getLong("Kontostand");
-                final long newBalance = availableMoney + amountToDeposit;
-                sql = "UPDATE user SET Kontostand=" + newBalance + " WHERE Kontonummer=" + accNumber;
-                if (!DBUtil.executeSql(sql, bank)) {
+                int amountToDepositInt = java.lang.Math.toIntExact(amountToDeposit);
+                if (!DBUtil.updateKontostand(amountToDepositInt, accNumberInt, bank)) {
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                     dispatcher.forward(request, response);
                     return;
@@ -328,15 +325,15 @@ public class Servlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
-        Logger.log(accNumber, "Deposit: " + amountToDeposit, bank);
+        Logger.log(accNumber, "Deposit: " + amountEuro + "," + amountCent + "€", bank);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/atm.jsp");
         dispatcher.forward(request, response);
     }
 
     protected boolean authenticate(final String uname, final String psw, final String targetBank){
-        final String sql = "SELECT Passwort FROM user WHERE Kontonummer=" + uname;
-        final ResultSet resultSet = DBUtil.executeSqlWithResultSet(sql, targetBank);
         try {
+            int accNumber = Integer.parseInt(uname);
+            final ResultSet resultSet = DBUtil.getPassword(accNumber, targetBank);
             if (resultSet.next()) {
                 return psw.equals(resultSet.getString("Passwort"));
             }

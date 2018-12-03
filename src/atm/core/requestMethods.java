@@ -56,30 +56,31 @@ public class requestMethods {
             dispatcher.forward(request, response);
             return;
         }
-        final ResultSet sqlCheck = DBUtil.executeSqlWithResultSet("SELECT Passwort FROM user WHERE Kontonummer=" + accNumber ,targetBank);
         try{
+            int accNumberInt = Integer.parseInt(accNumber);
+            final ResultSet sqlCheck = DBUtil.getPassword(accNumberInt, targetBank);
             if(!sqlCheck.next()){
                 dispatcher = request.getRequestDispatcher("/error.jsp");
                 dispatcher.forward(request, response);
                 return;
             }
-
+            int amount = java.lang.Math.toIntExact(amountLong);
+            // DB action for person receiving the transfer
+            DBUtil.updateKontostand(amount, accNumberInt, targetBank);
+            // DB action for person executing the transfer
+            int executingAccNumberInt = Integer.parseInt(executingAccNumber);
+            String bank = Servlet.Connection.getConnectionBank(request.getSession());
+            DBUtil.updateKontostand(-amount, executingAccNumberInt, bank);
+            // log for person receiving the transfer
+            Logger.log(accNumber, "WireTransfer from " + executingAccNumber + " at " + executingBank + ": " + amountEuro + "," + amountCent + "€", targetBank);
+            // log for person executing the transfer
+            Logger.log(executingAccNumber, "WireTransfer to " + accNumber + " at " + targetBank + ": " + amountEuro + "," + amountCent + "€", executingBank);
+            dispatcher.forward(request, response);
         }catch(Exception e){
             dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
             return;
         }
-        // DB action for person receiving the transfer
-        String sql = "UPDATE user  SET Kontostand = Kontostand + " + amountLong + " WHERE Kontonummer=" + accNumber;
-        DBUtil.executeSql(sql, targetBank);
-        // DB action for person executing the transfer
-        sql = "UPDATE user  SET Kontostand = Kontostand - " + amountLong + " WHERE Kontonummer=" + executingAccNumber;
-        DBUtil.executeSql(sql, Servlet.Connection.getConnectionBank(request.getSession()));
-        // log for person receiving the transfer
-        Logger.log(accNumber, "WireTransfer from " + executingAccNumber + " at " + executingBank + ": " + amountEuro + "," + amountCent + "€", targetBank);
-        // log for person executing the transfer
-        Logger.log(executingAccNumber, "WireTransfer to " + accNumber + " at " + targetBank + ": " + amountEuro + "," + amountCent + "€", executingBank);
-        dispatcher.forward(request, response);
     }
 
     public static void adminWireTransfer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -109,24 +110,25 @@ public class requestMethods {
             amountInt = (int)(amountLong/100);
             amountEuro = "" + amountInt;
             amountCent = "" + (amountLong - amountInt*100);
+            if (amountLong < 0) {
+                return;
+            }
+            // DB action for person receiving the transfer
+            int amount = java.lang.Math.toIntExact(amountLong);
+            int targetNumberInt = Integer.parseInt(targetNumber);
+            DBUtil.updateKontostand(amount, targetNumberInt, targetBank);
+            // DB action for person executing the transfer
+            int originNumberInt = Integer.parseInt(originNumber);
+            DBUtil.updateKontostand(-amount, originNumberInt, originBank);
+            // log for person receiving the transfer
+            Logger.log(targetNumber, "ADM | WireTransfer from " + originNumber + " at " + originBank + ": " + amountEuro + "," + amountCent + "€", targetBank);
+            // log for person executing the transfer
+            Logger.log(originNumber, "ADM | WireTransfer to " + targetNumber + " at " + targetBank + ": " + amountEuro + "," + amountCent + "€", originBank);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/adminInterface/adminPage.jsp");
+            dispatcher.forward(request, response);
         } catch (Exception e) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
-        if (amountLong < 0){
-            return;
-        }
-        // DB action for person receiving the transfer
-        String sql = "UPDATE user  SET Kontostand = Kontostand + " + amountLong + " WHERE Kontonummer=" + targetNumber;
-        // DB action for person executing the transfer
-        DBUtil.executeSql(sql, targetBank);
-        sql = "UPDATE user  SET Kontostand = Kontostand - " + amountLong + " WHERE Kontonummer=" + originNumber;
-        DBUtil.executeSql(sql, originBank);
-        // log for person receiving the transfer
-        Logger.log(targetNumber, "ADM | WireTransfer from " + originNumber + " at " + originBank + ": " + amountEuro + "," + amountCent + "€", targetBank);
-        // log for person executing the transfer
-        Logger.log(originNumber, "ADM | WireTransfer to " + targetNumber + " at " + targetBank + ": " + amountEuro + "," + amountCent + "€", originBank);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/adminInterface/adminPage.jsp");
-        dispatcher.forward(request, response);
     }
 }
